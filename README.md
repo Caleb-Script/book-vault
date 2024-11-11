@@ -1,8 +1,7 @@
 
 # BookVault - Moderne Buchverwaltung
 
-[![CI/CD](https://img.shields.io/github/workflow/status/<username>/BookVault/CI?label=CI/CD)](https://github.com/<username>/BookVault/actions)  
-[![License](https://img.shields.io/github/license/<username>/BookVault)](https://opensource.org/licenses/MIT)
+[![CI/CD](https://img.shields.io/github/workflow/status/<username>/BookVault/CI?label=CI/CD)](https://github.com/caleb-script/BookVault/actions)  
 
 **BookVault** ist eine moderne Single Page Application (SPA) zur effizienten Verwaltung von Büchern. Diese Anwendung ermöglicht es Nutzern, ihre Buchsammlung zu suchen, anzuzeigen, hinzuzufügen und zu verwalten. Sie wurde mit **React**, **Vite**, **Chakra UI**, und **React Icons** entwickelt und kommuniziert über eine **GraphQL-API** mit dem Backend. 
 
