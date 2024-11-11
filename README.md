@@ -1,6 +1,6 @@
 # BookVault - Moderne Buchverwaltung
 
-[![CI/CD](https://img.shields.io/github/workflow/status/Caleb-Script/BookVault/CI?label=CI/CD)](https://github.com/caleb-script/BookVault/actions)  
+[![CI/CD](https://img.shields.io/github/workflow/status/caleb-script/book-vault/CI?label=CI/CD)](https://github.com/caleb-script/book-vault/actions)
 
 **BookVault** ist eine moderne Single Page Application (SPA) zur effizienten Verwaltung von Büchern. Diese Anwendung ermöglicht es Nutzern, ihre Buchsammlung zu suchen, anzuzeigen, hinzuzufügen und zu verwalten. Sie wurde mit **React**, **Vite**, **Chakra UI**, und **React Icons** entwickelt und kommuniziert über eine **GraphQL-API** mit dem Backend. 
 
@@ -14,7 +14,6 @@
   - [Frontend Setup](#3-frontend-setup)
 - [Live Demo](#-live-demo)
 - [Mitwirken](#-mitwirken)
-- [Lizenz](#-lizenz)
 - [Dokumentation](#-dokumentation)
 - [Team](#-team)
 - [Commit-Nachrichten Konventionen](#commit-nachrichten-konventionen)
@@ -105,10 +104,6 @@ Beiträge sind herzlich willkommen! Bitte folge diesen Schritten:
    git push origin feature/feature-name
    ```
 5. Öffne einen Pull Request (PR).
-
-## ⚖️ Lizenz
-
-Dieses Projekt ist unter der **MIT-Lizenz** lizenziert. Siehe die [LICENSE](./LICENSE) Datei für weitere Details.
 
 ## 📑 Dokumentation
 
