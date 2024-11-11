@@ -1,2 +1,8 @@
-# book vault
- BookVault ist eine moderne Single Page Application (SPA) zur effizienten Verwaltung von Büchern. Entwickelt mit React, Vite, Chakra UI, und React Icons, bietet diese Anwendung eine benutzerfreundliche Oberfläche, die es ermöglicht, Bücher zu suchen, anzuzeigen, hinzuzufügen und zu bearbeiten. Sie kommuniziert über eine GraphQL-API mit dem Backend und sorgt für eine reibungslose Benutzererfahrung mit Funktionen wie Login, detaillierten Suchmöglichkeiten und Buchverwaltung.
+# React + Vite
+
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
