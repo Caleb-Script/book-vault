@@ -1,0 +1,2 @@
+# book vault
+ BookVault ist eine moderne Single Page Application (SPA) zur effizienten Verwaltung von Büchern. Entwickelt mit React, Vite, Chakra UI, und React Icons, bietet diese Anwendung eine benutzerfreundliche Oberfläche, die es ermöglicht, Bücher zu suchen, anzuzeigen, hinzuzufügen und zu bearbeiten. Sie kommuniziert über eine GraphQL-API mit dem Backend und sorgt für eine reibungslose Benutzererfahrung mit Funktionen wie Login, detaillierten Suchmöglichkeiten und Buchverwaltung.
