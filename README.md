@@ -2,7 +2,7 @@
 
 [![CI/CD](https://img.shields.io/github/workflow/status/caleb-script/book-vault/CI?label=CI/CD)](https://github.com/caleb-script/book-vault/actions)
 
-**BookVault** ist eine moderne Single Page Application (SPA) zur effizienten Verwaltung von Büchern. Diese Anwendung ermöglicht es Nutzern, ihre Buchsammlung zu suchen, anzuzeigen, hinzuzufügen und zu verwalten. Sie wurde mit **React**, **Vite**, **Chakra UI**, und **React Icons** entwickelt und kommuniziert über eine **GraphQL-API** mit dem Backend. 
+**BookVault** ist eine moderne Single Page Application (SPA) zur effizienten Verwaltung von Büchern. Diese Anwendung ermöglicht es Nutzern, ihre Buchsammlung zu suchen, anzuzeigen, hinzuzufügen und zu verwalten. Sie wurde mit **React**, **Vite**, **Chakra UI**, und **React Icons** entwickelt und kommuniziert über eine **GraphQL-API** mit dem Backend.
 
 ## 📑 Inhaltsverzeichnis
 
@@ -30,7 +30,7 @@
 
 ## 🧰 Technologie-Stack
 
-- **Frontend**: 
+- **Frontend**:
   - **React**: Für den Aufbau einer interaktiven und schnellen Benutzeroberfläche.
   - **Vite**: Build-Tool für schnelle Entwicklung und optimierte Produktions-Bundles.
   - **Chakra UI**: Für eine zugängliche und anpassbare UI-Komponentenbibliothek.
@@ -83,7 +83,7 @@ Die Anwendung sollte nun unter [http://localhost:3000](http://localhost:3000) er
 
 ## 🌐 Live Demo
 
-Für eine Live-Demo der Anwendung besuche:  
+Für eine Live-Demo der Anwendung besuche:
 [https://bookvault-demo.com](https://bookvault-demo.com)
 
 ## 🧑‍🤝‍🧑 Mitwirken
@@ -114,7 +114,7 @@ Weitere Informationen zur Nutzung und Entwicklung findest du in unserer [Dokumen
 - **Caleb** – Projektleitung, Frontend-Entwicklung
 - **Alicia** – Backend-Entwicklung, API-Design
 - **Benjamin** – Frontend-Entwicklung, UI-Design
-- **Jasin** – Testing, Qualitätssicherung
+- **Yasin** – Testing, Qualitätssicherung
 
 ## Commit-Nachrichten Konventionen
 
@@ -124,37 +124,37 @@ Um ein konsistentes Commit-Protokoll zu gewährleisten, bitten wir alle Teammitg
 
 - **`feat`**: Ein neues Feature oder eine Erweiterung der Funktionalität.
   - Beispiel: `feat(auth): add user authentication`
-  
+
 - **`fix`**: Eine Fehlerbehebung.
   - Beispiel: `fix(login): resolve bug with password validation`
-  
+
 - **`chore`**: Änderungen an der Infrastruktur oder Konfiguration, die keine funktionalen Änderungen beinhalten.
   - Beispiel: `chore: update package-lock.json`
-  
+
 - **`docs`**: Änderungen an der Dokumentation (z.B. README, Kommentare).
   - Beispiel: `docs(readme): improve setup instructions`
-  
+
 - **`style`**: Änderungen am Code-Stil (z.B. Einrückungen, Formatierungen), die keine funktionalen Änderungen bewirken.
   - Beispiel: `style: fix indentation in main.js`
-  
+
 - **`refactor`**: Code-Refactoring ohne neue Funktionalität oder Fehlerbehebung.
   - Beispiel: `refactor(auth): simplify login logic`
-  
+
 - **`perf`**: Leistungsverbesserungen.
   - Beispiel: `perf(api): optimize user data processing`
-  
+
 - **`test`**: Änderungen an Tests (z.B. neue Tests oder Tests verbessern).
   - Beispiel: `test(auth): add unit tests for login function`
-  
+
 - **`build`**: Änderungen am Build-Prozess (z.B. Build-Tools oder Deployment-Skripte).
   - Beispiel: `build: add webpack configuration`
-  
+
 - **`ci`**: Änderungen an der CI/CD-Konfiguration (z.B. GitHub Actions oder Jenkins-Pipelines).
   - Beispiel: `ci: add GitHub Actions workflow for testing`
-  
+
 - **`revert`**: Rückgängig machen eines früheren Commits.
   - Beispiel: `revert: revert "feat(auth): add login functionality"`
-  
+
 - **`release`**: Versionsmarkierung für die Veröffentlichung eines Releases.
   - Beispiel: `release: v1.0.0`
 
