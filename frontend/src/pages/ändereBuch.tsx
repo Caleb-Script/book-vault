@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 function aendereBuch(){
     <div>
         <h1>Servus</h1>
