@@ -52,7 +52,7 @@
     "dayjs": "^1.11.13",
     "framer-motion": "11.11.13",
     "material-ui-popup-state": "^5.3.1",
-    "next-themes": "^0.4.3",
+    "next-themes": "0.4.3",
     "pino": "^9.5.0",
     "pino-pretty": "^13.0.0",
     "prop-types": "^15.8.1",
@@ -61,7 +61,7 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.2",
     "react-icons": "^5.3.0",
-    "react-router-dom": "^6.28.0",
+    "react-router-dom": "6.28.0",
     "recharts": "2.13.3"
   },
   "devDependencies": {
