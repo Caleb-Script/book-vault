@@ -2,6 +2,9 @@
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "allowJs": true,
+    "checkJs": true,
+    "jsx": "react-jsx",
     "skipLibCheck": true,
     "paths": {
       "@/*": ["./src/*"]

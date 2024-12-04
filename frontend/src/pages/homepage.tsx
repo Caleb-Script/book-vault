@@ -71,6 +71,16 @@ const Homepage: React.FC = () => {
             Zum Erstellen eines Buches
           </Button>
         </motion.div>
+
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          style={{ marginTop: "10px" }}
+        >
+          <Button colorScheme="teal" onClick={() => handleNavigation("/login")}>
+            Zum Anmelden
+          </Button>
+        </motion.div>
       </Box>
     </Container>
   );
