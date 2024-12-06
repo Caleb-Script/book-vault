@@ -1,0 +1,82 @@
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 2px;
+  background-color: #0a0a08;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Navbar Logo und Titel */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Abstand zwischen Icon und Titel */
+}
+
+.navbar-logo img {
+  width: 100px; /* Kleinere Größe für das Icon */
+  height: 100px;
+}
+
+.navbar-logo .span {
+  color: #CC9600;
+
+  font-family: "Bona Nova";
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;  
+  letter-spacing: 0.72px;
+}
+
+.navbar-logo .span:hover {
+  color: #ffd700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.nav-links {
+  display:flex;
+  gap: 25px;
+  list-style-type: none;
+}
+
+.nav-links li {
+  color: #FFF;
+  font-family: "Bona Nova";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: 0.4px;
+}
+
+.nav-links li:hover {
+  color: goldenrod;
+  cursor: pointer;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: goldenrod;
+  transform: scale(1.1);
+}
+
+/* Highlighting of Active Link */
+.nav-links a.active {
+  color: goldenrod;
+  font-weight: bold;
+}

@@ -1,8 +1,23 @@
+body {
+  margin: 0;
+  padding-top: 60px; /* Adjust based on your NavBar height */
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333; /* or your desired color */
+  height: 60px; /* Adjust height to match your NavBar */
+  z-index: 10;
 }
 
 .logo {
@@ -11,6 +26,7 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
@@ -18,19 +34,14 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Add some padding to the content below the navbar */
+.main-content {
+  padding-top: 80px; /* Adjust for spacing below navbar */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Title Section */
+.title-section {
+  margin-top: 60px; /* Space below navbar */
 }
 
 .card {
