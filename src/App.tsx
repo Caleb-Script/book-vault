@@ -1,25 +1,17 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from 'next-themes';
-import Homepage from './pages/homepage';
-import DetailAnsicht from './pages/detailAnsicht';
-// import ÄndereBuch from './pages/ändereBuch';
-// import NeuesBuch from './pages/neuesBuch';
-// import SucheBuch from './pages/sucheBuch';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import BuchDetails from './pages/detailAnsicht';
 
-const App: React.FC = () => {
+const App = () => {
   return (
-    <ThemeProvider attribute="class">
+    <>
       <Router>
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/detailAnsicht" element={<DetailAnsicht />} />
-          {/* <Route path="/ändereBuch" element={<ÄndereBuch />} />
-          <Route path="/neuesBuch" element={<NeuesBuch />} />
-          <Route path="/sucheBuch" element={<SucheBuch />} /> */}
+          {/* Route für Buchdetails mit dynamischer ID */}
+          <Route path="/buch/:id" element={<BuchDetails />} />
         </Routes>
       </Router>
-    </ThemeProvider>
+    </>
   );
 };
 

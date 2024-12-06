@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "skipLibCheck": true,
+    "module": "ESNext", // Das ist wichtig für moderne JavaScript-Module
+    "moduleResolution": "node", // Stelle sicher, dass die Modulauflösung wie in Node.js erfolgt
+    "types": ["vite/client"], // Hier fügen wir den Vite-Typ hinzu
+    "skipLibCheck": true, // Überprüfe keine externen Bibliotheken
     "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+      "@/*": ["./src/*"] // Dies hilft bei der Verwendung von Aliasen in Imports
+    },
+    "jsx": "react" // Wenn du JSX verwendest, stelle sicher, dass es korrekt auf `react` gesetzt ist
+  },
+  "include": ["src"] // Sicherstellen, dass nur der `src`-Ordner in den Build einbezogen wird
 }
