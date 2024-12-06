@@ -1,78 +1,68 @@
 import React from "react";
-import { Box, Button, Container, Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, Text, Input } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import Navbar from "../features/navbar";
+import Footer from "../features/footer";
+import './design/homepage.css'; // CSS importieren
 
 const Homepage: React.FC = () => {
   const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-  };
-
   return (
-    <Container maxW="container.lg" centerContent position="relative">
+    <>
+    <Container
+      maxW="container.lg"
+      centerContent
+      position="relative"
+      paddingTop="80px"
+      className="header"  // Die Klasse für den Header
+    >
+      <Navbar />
+
       <Button
         colorScheme={theme === "dark" ? "yellow" : "blue"}
         onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
         position="absolute"
         top={4}
         left={4}
-        zIndex={1}  
+        zIndex={1}
       >
         Theme wechseln
       </Button>
 
-      <Box py={10} textAlign="center">
-        <Heading as="h1" size="2xl" mb={6}>
-          Book Vault
+      <Box py={10} textAlign="center" className="header">
+        <Heading as="h1" size="2xl" mb={6} className="h1">
+          Deine digitale Bibliothek jederzeit griffbereit
         </Heading>
-        <Text fontSize="xl" color="gray.500" mb={8}>
-            test123
+
+        <Text mb={8}>
+          Mit BookVault kannst du deine Bücher kinderleicht organisieren, durchsuchen und entdecken.
+          Verwalte deine Sammlung, entdecke neue Geschichten und halte deine Lieblingsbücher immer griffbereit – alles an einem Ort.
         </Text>
 
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Button colorScheme="teal" onClick={() => handleNavigation("/detailAnsicht")}>
-            Zur Detail Ansicht
-          </Button>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          style={{ marginTop: "10px" }}
-        >
-          <Button colorScheme="teal" onClick={() => handleNavigation("/sucheBuch")}>
-            Zum Suchen eines Buches
-          </Button>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          style={{ marginTop: "10px" }}
-        >
-          <Button colorScheme="teal" onClick={() => handleNavigation("/ändereBuch")}>
-            Zum Ändern eines Buches
-          </Button>
-        </motion.div>
-
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          style={{ marginTop: "10px" }}
-        >
-          <Button colorScheme="teal" onClick={() => handleNavigation("/neuesBuch")}>
-            Zum Erstellen eines Buches
-          </Button>
-        </motion.div>
+        <Box className="search-box" mt={6}>
+          <Input
+            placeholder="Search a Book"
+            size="lg"
+            borderRadius="full"
+            borderColor="#f39c12"
+            _placeholder={{ color: "gray.500" }}
+            _focus={{ borderColor: "orange.500", boxShadow: "0 0 10px orange" }}
+            mb={4}
+          />
+          <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+            <Button size="lg" className="search-box-button">
+              Search
+            </Button>
+          </motion.div>
+        </Box>
       </Box>
     </Container>
+    <Footer /> 
+    </>
   );
 };
 
