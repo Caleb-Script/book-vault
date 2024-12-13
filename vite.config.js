@@ -16,9 +16,9 @@ export default defineConfig({
 
     proxy: {
         '/graphql': {
-            target: 'https://localhost:3000', // Das Backend-URL
+            target: 'https://localhost:3000',
             changeOrigin: true,
-            secure: false, // Deaktiviert die Sicherheitsprüfung für selbstsignierte Zertifikate
+            secure: false,
         },
     },
 });
