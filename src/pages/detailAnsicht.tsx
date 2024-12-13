@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import { Switch } from '../components/ui/switch';
 import { Tag } from '../components/ui/tag';
 import { BUCH } from '../graphql/queries';
+import { Link as RouterLink } from 'react-router-dom';
 
 const BuchDetails = () => {
   const { id } = useParams();
@@ -69,6 +70,9 @@ const BuchDetails = () => {
               Delete
             </Button>
           </VStack>
+          <RouterLink to={"/"}>
+                      <Button colorScheme="blue">Startseite</Button>
+                    </RouterLink>
         </Box>
 
         {/* Rechte Spalte: Buchdetails */}
