@@ -11,6 +11,7 @@ const Startseite = () => {
       randomBookIds[Math.floor(Math.random() * randomBookIds.length)];
     return `/buch/${randomId}`; // Navigiere zur zufälligen Buchseite
   };
+
   return (
     <>
       <Box textAlign="center" p={5}>
@@ -21,8 +22,9 @@ const Startseite = () => {
         >
           counter: {count}
         </Button>
-        <Text mb={4}>Hier kannst du Details zu Büchern ansehen.</Text>
+        <Text mb={4}>Hier kannst du Details zu Büchern ansehen und ändern.</Text>
         <Stack>
+          {/* Link zur Buch-Detailansicht */}
           <Link to="/buch/1">
             <Button colorScheme="teal">Buch mit ID 1 anzeigen</Button>
           </Link>
@@ -31,6 +33,11 @@ const Startseite = () => {
           </Link>
           <Link to={handleRandomNavigation()}>
             <Button colorScheme="blue">Zufälliges Buch anzeigen</Button>
+          </Link>
+
+          {/* Link zur Buch-Ändern-Seite */}
+          <Link to="/buch/ändern">
+            <Button colorScheme="purple">Buch ändern</Button>
           </Link>
         </Stack>
       </Box>
