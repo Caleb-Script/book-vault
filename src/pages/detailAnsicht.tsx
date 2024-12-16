@@ -45,7 +45,17 @@ const BuchDetails = () => {
   const buch = data.buch;
 
   return (
-    <Box  color="white" minH="100vh" p={10}>
+    <Box
+      // color="white"
+      // minH="100vh"
+      // p={10}
+      w="100vw"
+      h="100vh"
+      backgroundImage="url('/src/assets/Hintergrund.png')"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundRepeat="no-repeat"
+    >
       <Flex direction={{ base: 'column', lg: 'row' }} gap={10}>
         {/* Linke Spalte: Bild und Aktionen */}
         <Box flex="1">
@@ -70,9 +80,9 @@ const BuchDetails = () => {
               Delete
             </Button>
           </VStack>
-          <RouterLink to={"/"}>
-                      <Button colorScheme="blue">Startseite</Button>
-                    </RouterLink>
+          <RouterLink to={'/'}>
+            <Button colorScheme="blue">Startseite</Button>
+          </RouterLink>
         </Box>
 
         {/* Rechte Spalte: Buchdetails */}
