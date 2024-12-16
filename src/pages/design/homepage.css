@@ -24,9 +24,9 @@
     font-family: "Bona Nova";
     font-size: 18px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 450;
     line-height: normal;
-    letter-spacing: 0.9px;
+    letter-spacing: 1.1px;
 }
 
 .search-box {
@@ -54,7 +54,7 @@
     border-radius: 25px;
     cursor: pointer;
     margin-top: 1rem;
-    font-family: "Bona Nova", Arial, sans-serif;
+    font-family: "Bona Nova";
 }
 
 .search-box button:hover {

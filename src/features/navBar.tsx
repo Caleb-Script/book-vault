@@ -1,13 +1,12 @@
-import React from 'react';
 import { NavLink } from 'react-router-dom';
 import CustomIcon from './icon.tsx';
 import dalle from './icon/DALLE.png';
 import '../pages/design/navbar.css';
 
 const Links = [
-  { name: 'Home', path: '/' },
+  { name: 'Home', path: '/homepage' },
   { name: 'Detailierte Ansicht', path: '/detailAnsicht' },
-  { name: 'Suche Buch', path: '/sucheBuch' },
+  { name: 'Suche Buch', path: '/' },
   { name: 'Ändere Buch', path: '/ändereBuch' },
   { name: 'Erstelle Buch', path: '/neuesBuch' },
   { name: 'Login', path: '/login' }
