@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Icon,
   Image,
   Link,
   Text,
@@ -16,6 +17,7 @@ import { Switch } from '../components/ui/switch';
 import { Tag } from '../components/ui/tag';
 import { BUCH } from '../graphql/queries';
 import { Link as RouterLink } from 'react-router-dom';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 
 const BuchDetails = () => {
   const { id } = useParams();
@@ -153,11 +155,13 @@ const BuchDetails = () => {
               <Text fontSize="sm" color="gray.400" mb={1}>
                 Bewertung
               </Text>
+
               <HStack>
                 {[...Array(5)].map((_, i) => (
                   <Badge
                     key={i}
-                    colorScheme={i < buch.rating ? 'yellow' : 'gray'}
+                    color={i < buch.rating ? 'yellow.100' : 'grey.100'}
+                    bgColor={i < buch.rating ? 'yellow.900' : 'grey.900'}
                     px={2}
                     borderRadius="full"
                   >
