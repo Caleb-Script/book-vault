@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Text, HStack, Flex, Image, Container } from '@chakra-ui/react';
 import { facebook, youtube, linkedin, instagram } from './icon/index';
 import FooterIcon from './footerIcon';
@@ -10,24 +9,29 @@ const Footer = () => {
   <Container className = "footer">
     <Box
       as="footer"
-      bg="gray.800"
+      bg="black"
       color="white"
       position="fixed"
       bottom={0}
       left={0}
       w="100%"
       zIndex={10}
-      py={4}
+      pt={0}
     >
       <Box>
         <Box
           as="a"
-          href="/"
+          href="/homepage"
           display="inline-block"
-          p={2}
           className = "footer"
         >
-          <Image src={dalle} alt="DALLE" className='custom-icon'/>
+          <Image 
+            src={dalle}
+            alt="DALLE" 
+            className='custom-icon' 
+            width="100%" 
+            height="100%"
+          />
         </Box>
       </Box>
 
