@@ -37,8 +37,8 @@ const Startseite = () => {
 
           {/* Link zur Buch-Ändern-Seite */}
           {/* Stelle sicher, dass die Route für das Bearbeiten des Buches korrekt ist */}
-          <Link to="/buch/1/bearbeiten">
-            <Button colorScheme="purple">Buch mit der ID 1 ändern</Button>
+          <Link to="/buch/40/bearbeiten">
+            <Button colorScheme="purple">Buch mit der ID 40 ändern</Button>
           </Link>
         </Stack>
       </Box>

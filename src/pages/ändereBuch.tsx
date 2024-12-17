@@ -75,8 +75,7 @@ const BuchÄndern = () => {
 
   const handleUpdate = async () => {
     console.log("Aktualisiere das Buch...", buch); // Debug-Log für den aktuellen Buch-Zustand
-
-    console.log(buch.rabatt);
+    console.log(id);
     try {
       const result = await updateBuch({
         variables: {
