@@ -1,175 +1,330 @@
-import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client';
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Heading,
+  HStack,
+  Image,
+  Link,
+  Text,
+  VStack,
+  Input,
+} from '@chakra-ui/react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Button, Input, Text, VStack } from '@chakra-ui/react';
-import { BUCH } from '../graphql/queries';  // GraphQL Query für Buch
-import { UPDATE_BUCH } from '../graphql/mutation';  // GraphQL Mutation für Buch-Aktualisierung
+import { Switch } from '../components/ui/switch';
+import { Tag } from '../components/ui/tag';
+import { BUCH } from '../graphql/queries';
+import { UPDATE_BUCH } from '../graphql/mutation'; // Mutation zum Aktualisieren des Buches
+import { Link as RouterLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
-const BuchAendern = () => {
-  const { id } = useParams(); // Holen der Buch-ID aus der URL
-  const navigate = useNavigate(); // Um nach dem Update auf eine andere Seite zu navigieren
+const BuchÄndern = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  // Query, um das Buch anhand der ID zu laden
+  // GraphQL Query, um Buchdetails zu laden
   const { data, loading, error } = useQuery(BUCH, {
     variables: { id },
   });
 
-  // Mutation für das Aktualisieren des Buches
-  const [updateBuch, { loading: updating, error: updateError, data: updateData }] = useMutation(UPDATE_BUCH);
+  // GraphQL Mutation zum Aktualisieren des Buches
+  const [updateBuch] = useMutation(UPDATE_BUCH);
 
-  // Zustand für das Buchformular
+  // Initialer Zustand für die Bearbeitung des Buches
   const [buch, setBuch] = useState({
     titel: '',
     untertitel: '',
+    isbn: '',
     preis: 0,
     rabatt: 0,
     lieferbar: false,
     datum: '',
     homepage: '',
     rating: 0,
+    schlagwoerter: [],
   });
 
   useEffect(() => {
     if (data) {
       const { buch } = data;
       setBuch({
-        titel: buch.titel.titel,
-        untertitel: buch.titel.untertitel,
+        titel: buch.titel,
+        untertitel: buch.untertitel,
+        isbn: buch.isbn,
         preis: buch.preis,
         rabatt: buch.rabatt,
         lieferbar: buch.lieferbar,
         datum: buch.datum,
         homepage: buch.homepage,
         rating: buch.rating,
+        schlagwoerter: buch.schlagwoerter,
       });
     }
   }, [data]);
 
+  // Handler für die Eingabeänderungen
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setBuch((prev) => ({
-      ...prev,
+    setBuch({
+      ...buch,
       [name]: type === 'checkbox' ? checked : value,
-    }));
+    });
   };
 
   const handleUpdate = async () => {
-    // Validierung (z. B. sicherstellen, dass Preis eine positive Zahl ist)
-    if (buch.preis <= 0) {
-      alert('Der Preis muss größer als 0 sein');
-      return;
-    }
+    console.log("Aktualisiere das Buch...", buch); // Debug-Log für den aktuellen Buch-Zustand
 
+    console.log(buch.rabatt);
     try {
-      await updateBuch({
+      const result = await updateBuch({
         variables: {
           id,
           input: {
             titel: buch.titel,
             untertitel: buch.untertitel,
-            preis: parseFloat(buch.preis.toString()),
-            rabatt: parseInt(buch.rabatt.toString(), 10),
+            isbn: buch.isbn,
+            preis: buch.preis, // Stelle sicher, dass der Typ stimmt
+            rabatt: buch.rabatt,
             lieferbar: buch.lieferbar,
             datum: buch.datum,
             homepage: buch.homepage,
             rating: buch.rating,
+            schlagwoerter: buch.schlagwoerter,
           },
         },
       });
-
-      // Nach erfolgreichem Update den Benutzer zur Detailansicht weiterleiten
-      navigate(`/buch/${id}`);
+  
+      console.log("Update-Ergebnis:", result); // Debug-Ausgabe des Mutations-Ergebnisses
+      navigate(`/buch/${id}`); // Weiterleitung nach dem Update
     } catch (err) {
-      console.error('Fehler beim Aktualisieren des Buches:', err);
+      console.error("Fehler beim Aktualisieren des Buches:", err);
     }
   };
+  
 
   if (loading) {
-    return <Text color="white">Lade Buchdaten...</Text>;
+    return (
+      <Flex align="center" justify="center" minH="100vh" bg="gray.800">
+        <Text fontSize="lg" color="white">
+          Lade Buchdetails...
+        </Text>
+      </Flex>
+    );
   }
 
   if (error) {
-    return <Text color="red.500">Fehler beim Laden des Buches: {error.message}</Text>;
+    return (
+      <Flex align="center" justify="center" minH="100vh" bg="gray.800">
+        <Text color="red.500">Fehler: {error.message}</Text>
+      </Flex>
+    );
   }
+
+  const buchData = data.buch;
 
   return (
     <Box color="white" minH="100vh" p={10}>
-      <VStack align="start" gap={4}>
-        <Text>Titel</Text>
-        <Input
-          type="text"
-          name="titel"
-          value={buch.titel}
-          onChange={handleInputChange}
-        />
+      <Flex direction={{ base: 'column', lg: 'row' }} gap={10}>
+        {/* Linke Spalte: Bild und Aktionen */}
+        <Box flex="1">
+          <Image
+            src="https://via.placeholder.com/150"
+            alt={buchData.id}
+            borderRadius="md"
+            mb={5}
+            boxShadow="lg"
+          />
+          <Heading as="h2" size="lg" mb={3}>
+            {buchData.id}
+          </Heading>
+          <Text fontSize="md" mb={5} fontStyle="italic">
+            {buchData.art}
+          </Text>
+          <VStack gap={4}>
+            {/* Schaltfläche zur Bearbeitung */}
+            <Button colorScheme="yellow" size="lg" onClick={handleUpdate}>
+              Update
+            </Button>
+            <Button colorScheme="red" size="lg">
+              Delete
+            </Button>
+          </VStack>
+          <RouterLink to={"/"}>
+            <Button colorScheme="blue">Startseite</Button>
+          </RouterLink>
+        </Box>
 
-        <Text>Untertitel</Text>
-        <Input
-          type="text"
-          name="untertitel"
-          value={buch.untertitel}
-          onChange={handleInputChange}
-        />
+        {/* Rechte Spalte: Buchdetails und Bearbeitungsformular */}
+        <Box flex="2">
+          <HStack align="start" gap={5} my={4}>
+            {/* ISBN */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                ISBN
+              </Text>
+              <Input
+                name="isbn"
+                value={buch.isbn}
+                onChange={handleInputChange}
+                bg="gray.700"
+                color="white"
+                border="none"
+              />
+            </Box>
 
-        <Text>Preis (€)</Text>
-        <Input
-          type="number"
-          name="preis"
-          value={buch.preis}
-          onChange={handleInputChange}
-        />
+            {/* Preis */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Preis
+              </Text>
+              <Input
+                name="preis"
+                value={buch.preis}
+                onChange={handleInputChange}
+                bg="gray.700"
+                color="white"
+                type="number"
+                border="none"
+              />
+            </Box>
 
-        <Text>Rabatt (%)</Text>
-        <Input
-          type="number"
-          name="rabatt"
-          value={buch.rabatt}
-          onChange={handleInputChange}
-        />
+            {/* Rabatt */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Rabatt
+              </Text>
+              <Flex align="center">
+              <Input
+                name="rabatt"
+                value={buch.rabatt}
+                onChange={handleInputChange}
+                bg="gray.700"
+                color="white"
+                type="string"
+                border="none"
+                flex="1" // Sorgt dafür, dass das Input-Field die verfügbare Breite nutzt
+                />
+                <Text ml={2} fontSize="md" color="white">
+                  %
+                </Text>
+              </Flex>
+            </Box>
 
-        <Text>Veröffentlichungsdatum</Text>
-        <Input
-          type="date"
-          name="datum"
-          value={buch.datum}
-          onChange={handleInputChange}
-        />
+            {/* Lieferbar */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Lieferbar
+              </Text>
+              <Switch
+  name="lieferbar"
+  checked={buch.lieferbar}
+  inputProps={{ onChange: handleInputChange }}
+  colorScheme="green"
+/>
+            </Box>
+          </HStack>
 
-        <Text>Homepage</Text>
-        <Input
-          type="text"
-          name="homepage"
-          value={buch.homepage}
-          onChange={handleInputChange}
-        />
+          <HStack align="start" gap={5} my={4}>
+            {/* Datum */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Datum
+              </Text>
+              <Input
+                name="datum"
+                value={buch.datum}
+                onChange={handleInputChange}
+                bg="gray.700"
+                color="white"
+                type="date"
+                border="none"
+              />
+            </Box>
 
-        <Text>Bewertung (1-5)</Text>
-        <Input
-          type="number"
-          name="rating"
-          min="1"
-          max="5"
-          value={buch.rating}
-          onChange={handleInputChange}
-        />
+            {/* Homepage */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Homepage
+              </Text>
+              <Input
+                name="homepage"
+                value={buch.homepage}
+                onChange={handleInputChange}
+                bg="gray.700"
+                color="white"
+                type="text"
+                border="none"
+              />
+            </Box>
 
-        <Text>Lieferbar</Text>
-        <Input
-          type="checkbox"
-          name="lieferbar"
-          checked={buch.lieferbar}
-          onChange={handleInputChange}
-        />
-      </VStack>
+            {/* Bewertung */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Bewertung
+              </Text>
+              <HStack>
+                {[...Array(5)].map((_, i) => (
+                  <Badge
+                    key={i}
+                    colorScheme={i < buch.rating ? 'yellow' : 'gray'}
+                    px={2}
+                    borderRadius="full"
+                  >
+                    ★
+                  </Badge>
+                ))}
+              </HStack>
+            </Box>
+          </HStack>
 
-      <Button colorScheme="blue" onClick={handleUpdate} mt={5}>
-        Buch aktualisieren
-      </Button>
+          <HStack align="start" gap={5} my={4}>
+            {/* Schlagwörter */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Schlagwörter
+              </Text>
+              <HStack gap={2}>
+                {buch.schlagwoerter.map((wort) => (
+                  <Tag key={wort} size="lg" variant="solid" colorScheme="yellow">
+                    {wort}
+                  </Tag>
+                ))}
+              </HStack>
+            </Box>
+          </HStack>
+        </Box>
+      </Flex>
 
-      {updateError && <Text color="red.500">{updateError.message}</Text>}
-      {updateData && <Text color="green.500">Buch erfolgreich aktualisiert!</Text>}
+      {/* Ähnliche Bücher */}
+      <Box mt={10}>
+        <Heading as="h3" size="lg" mb={5}>
+          Ähnliche Bücher
+        </Heading>
+        <Flex gap={5}>
+          <Box textAlign="center">
+            <Image
+              src="https://via.placeholder.com/100"
+              alt="Epsilon"
+              mb={2}
+              borderRadius="md"
+            />
+            <Text>Epsilon</Text>
+          </Box>
+          <Box textAlign="center">
+            <Image
+              src="https://via.placeholder.com/100"
+              alt="Phi"
+              mb={2}
+              borderRadius="md"
+            />
+            <Text>Phi</Text>
+          </Box>
+        </Flex>
+      </Box>
     </Box>
   );
 };
 
-export default BuchAendern;
+export default BuchÄndern;
