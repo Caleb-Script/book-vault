@@ -19,6 +19,7 @@ import { BUCH } from '../graphql/queries';
 import { UPDATE_BUCH } from '../graphql/mutation'; // Mutation zum Aktualisieren des Buches
 import { Link as RouterLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import client from '@/api/apolloClient';
 
 const BuchÄndern = () => {
   const { id } = useParams();
@@ -30,25 +31,38 @@ const BuchÄndern = () => {
   });
 
   // GraphQL Mutation zum Aktualisieren des Buches
-  const [updateBuch] = useMutation(UPDATE_BUCH);
+  const [updateBuch] = useMutation(UPDATE_BUCH, {client});
 
-  // Initialer Zustand für die Bearbeitung des Buches
-  const [buch, setBuch] = useState({
+  type BuchTyp = {
+    titel: string;
+    untertitel: string;
+    isbn: string;
+    preis: number; // Preis sollte ein number sein
+    rabatt: number; // Rabatt sollte ein number sein
+    lieferbar: boolean;
+    datum: string;
+    homepage: string;
+    rating: number;
+    schlagwoerter: string[];
+  };
+  
+  const [buch, setBuch] = useState<BuchTyp>({
     titel: '',
     untertitel: '',
     isbn: '',
-    preis: 0,
-    rabatt: 0,
+    preis: 0, // number
+    rabatt: 0, // number
     lieferbar: false,
     datum: '',
     homepage: '',
     rating: 0,
     schlagwoerter: [],
   });
+  
 
   useEffect(() => {
     if (data) {
-      const { buch } = data;
+      const  buch  = data.buch;
       setBuch({
         titel: buch.titel,
         untertitel: buch.untertitel,
@@ -67,40 +81,41 @@ const BuchÄndern = () => {
   // Handler für die Eingabeänderungen
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    setBuch({
-      ...buch,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+    
+    setBuch((prevBuch) => ({
+      ...prevBuch,
+      [name]: type === 'checkbox' ? checked : name === 'preis' || name === 'rabatt' ? parseFloat(value) : value,
+    }));
   };
+  
 
   const handleUpdate = async () => {
-    console.log("Aktualisiere das Buch...", buch); // Debug-Log für den aktuellen Buch-Zustand
-    console.log(id);
     try {
+      const preisFloat = buch.preis; // Ist bereits ein Float
+      const rabattFloat = buch.rabatt; // Ist bereits ein Float
+      console.log('Token im LocalStorage:', localStorage.getItem('authToken'));
       const result = await updateBuch({
         variables: {
           id,
-          input: {
-            titel: buch.titel,
-            untertitel: buch.untertitel,
-            isbn: buch.isbn,
-            preis: buch.preis, // Stelle sicher, dass der Typ stimmt
-            rabatt: buch.rabatt,
-            lieferbar: buch.lieferbar,
-            datum: buch.datum,
-            homepage: buch.homepage,
-            rating: buch.rating,
-            schlagwoerter: buch.schlagwoerter,
-          },
+          isbn: buch.isbn,
+          rating: buch.rating,
+          preis: preisFloat, // Float-Wert
+          rabatt: rabattFloat, // Float-Wert
+          lieferbar: buch.lieferbar,
+          datum: buch.datum,
+          homepage: buch.homepage,
+          schlagwoerter: buch.schlagwoerter,
         },
       });
   
-      console.log("Update-Ergebnis:", result); // Debug-Ausgabe des Mutations-Ergebnisses
-      navigate(`/buch/${id}`); // Weiterleitung nach dem Update
+      console.log('Update erfolgreich:', result);
+      navigate(`/buch/${id}`);
     } catch (err) {
-      console.error("Fehler beim Aktualisieren des Buches:", err);
+      console.error('Fehler beim Aktualisieren:', err);
     }
   };
+  
+
   
 
   if (loading) {
@@ -191,25 +206,20 @@ const BuchÄndern = () => {
 
             {/* Rabatt */}
             <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-              <Text fontSize="sm" color="gray.400" mb={1}>
-                Rabatt
-              </Text>
-              <Flex align="center">
-              <Input
-                name="rabatt"
-                value={buch.rabatt}
-                onChange={handleInputChange}
-                bg="gray.700"
-                color="white"
-                type="string"
-                border="none"
-                flex="1" // Sorgt dafür, dass das Input-Field die verfügbare Breite nutzt
-                />
-                <Text ml={2} fontSize="md" color="white">
-                  %
-                </Text>
-              </Flex>
-            </Box>
+  <Text fontSize="sm" color="gray.400" mb={1}>
+    Rabatt
+  </Text>
+  <Input
+    name="rabatt"
+    value={buch.rabatt} // Rabatt direkt als Wert ohne "%"
+    onChange={handleInputChange}
+    bg="gray.700"
+    color="white"
+    type="number" // Setzen Sie den Typ als "number"
+    border="none"
+  />
+</Box>
+
 
             {/* Lieferbar */}
             <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
