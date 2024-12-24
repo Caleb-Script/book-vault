@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Container, Grid, Text, Heading, Button, Icon } from '@chakra-ui/react';
+import { Box, Container, Grid, Text, Heading, Button} from '@chakra-ui/react';
 import { useQuery } from '@apollo/client';
 import { BUECHER } from '../graphql/queries';
-import Navbar from '../features/navbar';
+import Navbar from '../features/navBar.js';
 import { Checkbox } from '@/components/ui/checkbox';
 import BookCard from '../features/BookCard';
 import background from '../features/icon/background.png';
