@@ -4,11 +4,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { BUECHER } from "../graphql/queries.ts";
 import img from "./icon/vorstellung.png";
 import { useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom"; // Importiere useNavigate
+
 const MotionFlex = motion(Flex);
 const MotionBox = motion(Box);
 
 export const Vorstellung: React.FC = () => {
   const { data, loading, error } = useQuery(BUECHER);
+  const navigate = useNavigate();
   
   const bgBox = useColorModeValue("white", "black");
   const textBox = useColorModeValue("black", "white");
@@ -16,7 +19,11 @@ export const Vorstellung: React.FC = () => {
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error loading data: {error.message}</Text>;
   
-  const buecher = data.BUECHER || [];
+  const buecher = data.buecher || [];
+
+  const handleDiscoverMore = () => {
+    navigate("/alleBuecher");
+  };
 
   return (
     <AnimatePresence>
@@ -49,7 +56,6 @@ export const Vorstellung: React.FC = () => {
           <Image src={img} alt="Icon" />
         </MotionBox>
 
-        {/* Content */}
         <VStack gap={4} align="start" w={{ base: "100%", md: "50%" }}>
           <Heading as="h1" size="6xl">
             Deine Lieblings<span style={{ color: "#CC9600" }}>bücher sind hier!</span> 
@@ -80,6 +86,7 @@ export const Vorstellung: React.FC = () => {
             borderRadius={10}
             _hover={{ bg: "#CC9600" }}
             size="lg"
+            onClick={handleDiscoverMore}
           >
             Entdecke mehr
           </Button>

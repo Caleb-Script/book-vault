@@ -9,7 +9,7 @@ const App = () => {
         <Routes>
           {/* Startseite */}
           <Route path="/" element={<Startseite />} />
-          <Route path="alleBuecher" element={<Homepage/>} />
+
           {/* Route für Buchdetails mit dynamischer ID */}
           <Route path="/buch/:id" element={<BuchDetails />} />
         </Routes>
