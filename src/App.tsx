@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import BuchDetails from './pages/detailAnsicht';
 import Startseite from './pages/startseite';
 import Homepage from './pages/homepage';
+import Login from './pages/login';
 import Navbar from './features/navbar';
 import { Suspense } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/" element={<Startseite />} />
           <Route path="/homepage" element={<Homepage />} />
           <Route path="/buch/:id" element={<BuchDetails />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Box>
     </Flex>
