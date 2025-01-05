@@ -18,6 +18,8 @@ const App = () => {
       <Box as="main" flex="1" overflow="auto">
         <Routes>
           <Route path="/" element={<Startseite />} />
+
+          {/* Route für Buchdetails mit dynamischer ID */}
           <Route path="/homepage" element={<Homepage />} />
           <Route path="/buch/:id" element={<BuchDetails />} />
         </Routes>
