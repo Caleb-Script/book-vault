@@ -6,6 +6,7 @@ import {
   Flex,
   Heading,
   HStack,
+  Icon,
   Image,
   Link,
   Text,
@@ -16,6 +17,7 @@ import { Switch } from '../components/ui/switch';
 import { Tag } from '../components/ui/tag';
 import { BUCH } from '../graphql/queries';
 import { Link as RouterLink } from 'react-router-dom';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa';
 
 const BuchDetails = () => {
   const { id } = useParams();
@@ -45,7 +47,17 @@ const BuchDetails = () => {
   const buch = data.buch;
 
   return (
-    <Box  color="white" minH="100vh" p={10}>
+    <Box
+      // color="white"
+      // minH="100vh"
+      // p={10}
+      w="100vw"
+      h="100vh"
+      backgroundImage="url('/src/assets/Hintergrund.png')"
+      backgroundSize="cover"
+      backgroundPosition="center"
+      backgroundRepeat="no-repeat"
+    >
       <Flex direction={{ base: 'column', lg: 'row' }} gap={10}>
         {/* Linke Spalte: Bild und Aktionen */}
         <Box flex="1">
@@ -70,9 +82,9 @@ const BuchDetails = () => {
               Delete
             </Button>
           </VStack>
-          <RouterLink to={"/"}>
-                      <Button colorScheme="blue">Startseite</Button>
-                    </RouterLink>
+          <RouterLink to={'/'}>
+            <Button colorScheme="blue">Startseite</Button>
+          </RouterLink>
         </Box>
 
         {/* Rechte Spalte: Buchdetails */}
@@ -143,11 +155,13 @@ const BuchDetails = () => {
               <Text fontSize="sm" color="gray.400" mb={1}>
                 Bewertung
               </Text>
+
               <HStack>
                 {[...Array(5)].map((_, i) => (
                   <Badge
                     key={i}
-                    colorScheme={i < buch.rating ? 'yellow' : 'gray'}
+                    color={i < buch.rating ? 'yellow.100' : 'grey.100'}
+                    bgColor={i < buch.rating ? 'yellow.900' : 'grey.900'}
                     px={2}
                     borderRadius="full"
                   >
