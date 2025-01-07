@@ -116,7 +116,7 @@ const BuchDetails = () => {
                 Rabatt
               </Text>
               <Text fontSize="md" fontWeight="bold">
-                {buch.rabatt}%
+                {buch.rabatt}
               </Text>
             </Box>
 

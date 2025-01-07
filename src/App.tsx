@@ -2,10 +2,11 @@ import { Route, Routes } from 'react-router-dom';
 import BuchDetails from './pages/detailAnsicht';
 import Startseite from './pages/startseite';
 import Homepage from './pages/homepage';
+import Navbar from './features/navBar';
 import Login from './pages/login';
-import Navbar from './features/navbar';
 import { Suspense } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
+import BuchAendern from './pages/ändereBuch';
 
 const App = () => {
   return (
@@ -23,6 +24,8 @@ const App = () => {
           {/* Route für Buchdetails mit dynamischer ID */}
           <Route path="/homepage" element={<Homepage />} />
           <Route path="/buch/:id" element={<BuchDetails />} />
+          {/* Route zum Ändern eines Buchs */}
+          <Route path="/buch/:id/bearbeiten" element={<BuchAendern />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </Box>
