@@ -5,12 +5,12 @@ import { useTheme } from './context/ThemeContext';
 import Navbar from './features/navBar';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
-// import Login from './pages/login';
 import Footer from './features/footer';
 import Startseite from './pages/bücher';
 import LoginPage from './pages/login';
 import UserPage from './pages/UserPage';
 import BuchAendern from './pages/ändereBuch';
+import BuchErstellen from './pages/neuesBuch';
 
 const App = () => {
   const navbarHeight = '60px'; // Höhe der Navbar
