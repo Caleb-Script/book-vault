@@ -4,6 +4,11 @@ import Navbar from './features/navBar';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
 import Startseite from './pages/startseite';
+import Navbar from './features/navBar';
+import Login from './pages/login';
+import { Suspense } from 'react';
+import { Box, Flex } from '@chakra-ui/react';
+import BuchAendern from './pages/ändereBuch';
 
 const App = () => {
   const navbarHeight = '60px'; // Höhe der Navbar
@@ -41,6 +46,9 @@ const App = () => {
 
           {/* Buchdetails */}
           <Route path="/buch/:id" element={<BuchDetails />} />
+          {/* Route zum Ändern eines Buchs */}
+          <Route path="/buch/:id/bearbeiten" element={<BuchAendern />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Box>
     </Flex>

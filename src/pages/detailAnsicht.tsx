@@ -120,6 +120,124 @@ const BuchDetails = () => {
                   </HStack>
                 )
               }
+          <HStack align="start" gap={5} my={4}>
+            {/* ISBN */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                ISBN
+              </Text>
+              <Text fontSize="md" fontWeight="bold">
+                {buch.isbn}
+              </Text>
+            </Box>
+
+            {/* Preis */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Preis
+              </Text>
+              <Text fontSize="md" fontWeight="bold">
+                {buch.preis} EUR
+              </Text>
+            </Box>
+
+            {/* Rabatt */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Rabatt
+              </Text>
+              <Text fontSize="md" fontWeight="bold">
+                {buch.rabatt}
+              </Text>
+            </Box>
+
+            {/* Lieferbar */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Lieferbar
+              </Text>
+              <Switch checked={buch.lieferbar} size="md" colorScheme="green" />
+            </Box>
+          </HStack>
+
+          <HStack align="start" gap={5} my={4}>
+            {/* Datum */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Datum
+              </Text>
+              <Text fontSize="md" fontWeight="bold">
+                {buch.datum}
+              </Text>
+            </Box>
+
+            {/* Homepage */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Homepage
+              </Text>
+              <Link href={buch.homepage} color="teal.300">
+                {buch.homepage}
+              </Link>
+            </Box>
+
+            {/* Bewertung */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Bewertung
+              </Text>
+
+              <HStack>
+                {[...Array(5)].map((_, i) => (
+                  <Badge
+                    key={i}
+                    color={i < buch.rating ? 'yellow.100' : 'grey.100'}
+                    bgColor={i < buch.rating ? 'yellow.900' : 'grey.900'}
+                    px={2}
+                    borderRadius="full"
+                  >
+                    ★
+                  </Badge>
+                ))}
+              </HStack>
+            </Box>
+          </HStack>
+
+          <HStack align="start" gap={5} my={4}>
+            {/* Schlagwörter */}
+            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Schlagwörter
+              </Text>
+              <HStack gap={2}>
+                {buch.schlagwoerter.map((wort: string) => (
+                  <Tag
+                    key={wort}
+                    size="lg"
+                    variant="solid"
+                    colorScheme="yellow"
+                  >
+                    {wort}
+                  </Tag>
+                ))}
+              </HStack>
+            </Box>
+          </HStack>
+        </Box>
+      </Flex>
+
+      {/* Ähnliche Bücher */}
+      <Box mt={10}>
+        <Heading as="h3" size="lg" mb={5}>
+          Ähnliche Bücher
+        </Heading>
+        <Flex gap={5}>
+          <Box textAlign="center">
+            <Image
+              src="https://via.placeholder.com/100"
+              alt="Epsilon"
+              mb={2}
+              borderRadius="md"
             />
             <DetailBox label="Datum" content={buch.datum} />
             <DetailBox
