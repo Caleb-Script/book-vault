@@ -1,4 +1,5 @@
-import { useQuery, useMutation } from '@apollo/client';
+import client from '@/api/apolloClient';
+import { useMutation, useQuery } from '@apollo/client';
 import {
   Badge,
   Box,
@@ -7,19 +8,16 @@ import {
   Heading,
   HStack,
   Image,
-  Link,
+  Input,
   Text,
   VStack,
-  Input,
 } from '@chakra-ui/react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Switch } from '../components/ui/switch';
 import { Tag } from '../components/ui/tag';
-import { BUCH } from '../graphql/queries';
 import { UPDATE_BUCH } from '../graphql/mutation'; // Mutation zum Aktualisieren des Buches
-import { Link as RouterLink } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import client from '@/api/apolloClient';
+import { BUCH } from '../graphql/queries';
 
 const BuchÄndern = () => {
   const { id } = useParams();
@@ -31,7 +29,7 @@ const BuchÄndern = () => {
   });
 
   // GraphQL Mutation zum Aktualisieren des Buches
-  const [updateBuch] = useMutation(UPDATE_BUCH, {client});
+  const [updateBuch] = useMutation(UPDATE_BUCH, { client });
 
   type BuchTyp = {
     titel: string;
@@ -45,7 +43,7 @@ const BuchÄndern = () => {
     rating: number;
     schlagwoerter: string[];
   };
-  
+
   const [buch, setBuch] = useState<BuchTyp>({
     titel: '',
     untertitel: '',
@@ -58,11 +56,10 @@ const BuchÄndern = () => {
     rating: 0,
     schlagwoerter: [],
   });
-  
 
   useEffect(() => {
     if (data) {
-      const  buch  = data.buch;
+      const buch = data.buch;
       setBuch({
         titel: buch.titel,
         untertitel: buch.untertitel,
@@ -81,13 +78,17 @@ const BuchÄndern = () => {
   // Handler für die Eingabeänderungen
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    
+
     setBuch((prevBuch) => ({
       ...prevBuch,
-      [name]: type === 'checkbox' ? checked : name === 'preis' || name === 'rabatt' ? parseFloat(value) : value,
+      [name]:
+        type === 'checkbox'
+          ? checked
+          : name === 'preis' || name === 'rabatt'
+            ? parseFloat(value)
+            : value,
     }));
   };
-  
 
   const handleUpdate = async () => {
     try {
@@ -107,16 +108,13 @@ const BuchÄndern = () => {
           schlagwoerter: buch.schlagwoerter,
         },
       });
-  
+
       console.log('Update erfolgreich:', result);
       navigate(`/buch/${id}`);
     } catch (err) {
       console.error('Fehler beim Aktualisieren:', err);
     }
   };
-  
-
-  
 
   if (loading) {
     return (
@@ -165,7 +163,7 @@ const BuchÄndern = () => {
               Delete
             </Button>
           </VStack>
-          <RouterLink to={"/"}>
+          <RouterLink to={'/'}>
             <Button colorScheme="blue">Startseite</Button>
           </RouterLink>
         </Box>
@@ -206,20 +204,19 @@ const BuchÄndern = () => {
 
             {/* Rabatt */}
             <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-  <Text fontSize="sm" color="gray.400" mb={1}>
-    Rabatt
-  </Text>
-  <Input
-    name="rabatt"
-    value={buch.rabatt} // Rabatt direkt als Wert ohne "%"
-    onChange={handleInputChange}
-    bg="gray.700"
-    color="white"
-    type="number" // Setzen Sie den Typ als "number"
-    border="none"
-  />
-</Box>
-
+              <Text fontSize="sm" color="gray.400" mb={1}>
+                Rabatt
+              </Text>
+              <Input
+                name="rabatt"
+                value={buch.rabatt} // Rabatt direkt als Wert ohne "%"
+                onChange={handleInputChange}
+                bg="gray.700"
+                color="white"
+                type="number" // Setzen Sie den Typ als "number"
+                border="none"
+              />
+            </Box>
 
             {/* Lieferbar */}
             <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
@@ -227,11 +224,11 @@ const BuchÄndern = () => {
                 Lieferbar
               </Text>
               <Switch
-  name="lieferbar"
-  checked={buch.lieferbar}
-  inputProps={{ onChange: handleInputChange }}
-  colorScheme="green"
-/>
+                name="lieferbar"
+                checked={buch.lieferbar}
+                inputProps={{ onChange: handleInputChange }}
+                colorScheme="green"
+              />
             </Box>
           </HStack>
 
@@ -296,7 +293,12 @@ const BuchÄndern = () => {
               </Text>
               <HStack gap={2}>
                 {buch.schlagwoerter.map((wort) => (
-                  <Tag key={wort} size="lg" variant="solid" colorScheme="yellow">
+                  <Tag
+                    key={wort}
+                    size="lg"
+                    variant="solid"
+                    colorScheme="yellow"
+                  >
                     {wort}
                   </Tag>
                 ))}

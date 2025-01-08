@@ -14,18 +14,19 @@
     "test:istanbul": "npm t -- --coverage",
     "depcheck": "depcheck",
     "eslint": "eslint src __tests__",
-    "prettier": "prettier --cache --write \"src/**/*.ts\""
+    "prettier": "prettier --cache --write \"src/**/*.ts\" \"src/**/*.tsx\""
   },
   "dependencies": {
     "@apollo/client": "^3.12.3",
-    "@chakra-ui/react": "3.2.3",
-    "@emotion/react": "^11.14.0",
+    "@chakra-ui/react": "3.2.5",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
     "@types/react-slick": "0.23.13",
     "framer-motion": "11.14.4",
-    "next-themes": "^0.4.4",
+    "next-themes": "0.4.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-icons": "^5.4.0",
+    "react-icons": "5.4.0",
     "react-router-dom": "^7.0.2",
     "react-slick": "0.30.3",
     "slick-carousel": "1.8.1"
@@ -42,6 +43,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.12.0",
+    "prettier-plugin-organize-imports": "4.1.0",
     "react-slick": "0.30.3",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.15.0",

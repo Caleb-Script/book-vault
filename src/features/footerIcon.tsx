@@ -1,15 +1,19 @@
-import React from 'react';
 import { IconButton, Image } from '@chakra-ui/react';
+import React from 'react';
 
 interface CustomIconProps {
-  imageSrc: string; 
-  altText: string;  
-  redirectTo: string; 
+  imageSrc: string;
+  altText: string;
+  redirectTo: string;
 }
 
-const FooterIcon: React.FC<CustomIconProps> = ({ imageSrc, altText, redirectTo }) => {
+const FooterIcon: React.FC<CustomIconProps> = ({
+  imageSrc,
+  altText,
+  redirectTo,
+}) => {
   const handleRedirect = (url: string) => {
-    window.location.href = url; 
+    window.location.href = url;
   };
 
   return (
@@ -18,13 +22,12 @@ const FooterIcon: React.FC<CustomIconProps> = ({ imageSrc, altText, redirectTo }
       size="lg"
       variant="ghost"
       onClick={() => handleRedirect(redirectTo)}
-      _hover={{ 
-        
-        scale: (1.1),
+      _hover={{
+        scale: 1.1,
         bg: 'transparent',
-        outline: 'none'
+        outline: 'none',
       }}
-      _focus={{ boxShadow: 'none' }} 
+      _focus={{ boxShadow: 'none' }}
     >
       <Image src={imageSrc} alt={altText} boxSize="60px" objectFit="contain" />
     </IconButton>

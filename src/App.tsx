@@ -1,14 +1,23 @@
 import { Box, Flex } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import { useTheme } from './context/ThemeContext';
 import Navbar from './features/navBar';
+import Bücher from './pages/bücher';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
-import Startseite from './pages/startseite';
 import Login from './pages/login';
+import Startseite from './pages/startseite';
 import BuchAendern from './pages/ändereBuch';
 
 const App = () => {
   const navbarHeight = '60px'; // Höhe der Navbar
+  const { isDarkMode } = useTheme();
+
+  useEffect(() => {
+    document.body.style.backgroundColor = isDarkMode ? '#000' : '#fff';
+    document.body.style.color = isDarkMode ? '#fff' : '#000';
+  }, [isDarkMode]);
 
   return (
     <Flex direction="column" height="100vh">
@@ -40,6 +49,7 @@ const App = () => {
 
           {/* Homepage */}
           <Route path="/homepage" element={<Homepage />} />
+          <Route path="/asd" element={<Bücher />} />
 
           {/* Buchdetails */}
           <Route path="/buch/:id" element={<BuchDetails />} />
