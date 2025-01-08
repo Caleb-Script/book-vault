@@ -17,11 +17,11 @@ const Footer = () => {
       as="footer"
       bg="black"
       color="white"
-      position="fixed"
+      //position="fixed"
       bottom={0}
       left={0}
       w="100%"
-      zIndex={10}
+      //zIndex={10}
       py={4}
       px={8}
       boxShadow="0 -2px 5px rgba(0, 0, 0, 0.1)"
