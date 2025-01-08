@@ -17,17 +17,17 @@ import { FaCheckCircle, FaStar, FaTimesCircle } from 'react-icons/fa';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import { Tag } from '../components/ui/tag';
+import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { BUCH, BUECHER } from '../graphql/query/get-buch.query';
 import '../styles/slick.css';
 import '../styles/slider.css';
 import { Buch } from '../types/buch.type';
-import { useAuth } from '../context/AuthContext';
 
 const BuchDetails = () => {
   const { id } = useParams();
   const { isDarkMode } = useTheme();
-    const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const { data, loading, error } = useQuery(BUCH, {
     variables: { id },

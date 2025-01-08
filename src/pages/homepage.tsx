@@ -9,11 +9,10 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import Footer from '../features/footer.js';
-import Navbar from '../features/navBar.js';
-import './design/homepage.css';
-import { Vorstellung } from '../features/vorstellung.js';
 import { Link } from 'react-router-dom';
+import Navbar from '../features/navBar.js';
+import { Vorstellung } from '../features/vorstellung.js';
+import './design/homepage.css';
 
 const MotionBox = motion(Box);
 

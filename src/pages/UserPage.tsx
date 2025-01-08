@@ -8,14 +8,18 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { ProgressCircleRing, ProgressCircleRoot, ProgressCircleValueText } from '../components/ui/progress-circle';
 import { useNavigate } from 'react-router-dom';
+import {
+  ProgressCircleRing,
+  ProgressCircleRoot,
+  ProgressCircleValueText,
+} from '../components/ui/progress-circle';
+import { useAuth } from '../context/AuthContext';
 
 const UserPage = () => {
   const { user, logout } = useAuth();
   const [remainingTime, setRemainingTime] = useState<number>(0);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user?.expires_in) {
@@ -43,7 +47,6 @@ const UserPage = () => {
     const secs = (seconds % 60).toString().padStart(2, '0');
     return `${hours}:${minutes}:${secs}`;
   };
-
 
   if (!user) {
     return (
