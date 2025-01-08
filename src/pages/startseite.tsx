@@ -22,7 +22,9 @@ const Startseite = () => {
         >
           counter: {count}
         </Button>
-        <Text mb={4}>Hier kannst du Details zu Büchern ansehen und ändern.</Text>
+        <Text mb={4}>
+          Hier kannst du Details zu Büchern ansehen und ändern.
+        </Text>
         <Stack>
           {/* Link zur Buch-Detailansicht */}
           <Link to="/buch/1">
