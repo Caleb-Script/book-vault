@@ -22,10 +22,12 @@ import { BUCH, BUECHER } from '../graphql/query/get-buch.query';
 import '../styles/slick.css';
 import '../styles/slider.css';
 import { Buch } from '../types/buch.type';
+import { useAuth } from '../context/AuthContext';
 
 const BuchDetails = () => {
   const { id } = useParams();
   const { isDarkMode } = useTheme();
+    const { user, isAuthenticated } = useAuth();
 
   const { data, loading, error } = useQuery(BUCH, {
     variables: { id },
@@ -119,24 +121,27 @@ const BuchDetails = () => {
               </Text>
             )}
           </Box>
-          <Stack direction="row" gap={4}>
-            <Button
-              colorScheme="yellow"
-              variant="solid"
-              bg="#cc9600"
-              color="black"
-            >
-              Bearbeiten
-            </Button>
-            <Button
-              colorScheme="red"
-              variant="outline"
-              borderColor="#cc9600"
-              color="#cc9600"
-            >
-              Löschen
-            </Button>
-          </Stack>
+          {/* Buttons basierend auf Benutzerrolle */}
+          {isAuthenticated && user?.role === 'admin' && (
+            <Stack direction="row" gap={4}>
+              <Button
+                colorScheme="yellow"
+                variant="solid"
+                bg="#cc9600"
+                color="black"
+              >
+                Bearbeiten
+              </Button>
+              <Button
+                colorPalette={'red'}
+                variant="outline"
+                borderColor="#cc9600"
+                color="#cc9600"
+              >
+                Löschen
+              </Button>
+            </Stack>
+          )}
           <RouterLink to="/">
             <Button colorScheme="blue" size="lg" bg="#cc9600" color="black">
               Zurück zur Startseite
