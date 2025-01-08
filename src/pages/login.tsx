@@ -1,86 +1,115 @@
-import { Field } from '@/components/ui/field';
-import { Box, Button, Container, Heading, Input, Text } from '@chakra-ui/react';
-import { motion } from 'framer-motion';
-import React, { useState } from 'react';
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Input,
+  Separator,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const Login: React.FC = () => {
+const Login = () => {
+  const { login } = useAuth();
   const navigate = useNavigate();
-
-  // States für Eingaben und Fehler
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({ username: false, password: false });
+  const [error, setError] = useState('');
 
-  // Validierungs- und Navigationslogik
-  const handleLogin = () => {
-    const newErrors = {
-      username: !username.trim(),
-      password: !password.trim(),
-    };
-
-    setErrors(newErrors);
-
-    if (!newErrors.username && !newErrors.password) {
-      alert('Erfolgreich eingeloggt!');
-      navigate('/homepage'); // Weiterleitung nach erfolgreichem Login
+  const handleLogin = async () => {
+    try {
+      await login(username, password);
+      navigate('/user'); // Weiterleitung zur User-Seite
+    } catch (err) {
+      setError('Login fehlgeschlagen. Bitte überprüfe deine Eingaben.');
     }
   };
 
-  const handleNavigation = (path: string) => {
-    navigate(path);
-  };
-
   return (
-    <Container maxW="container.lg" centerContent position="relative">
-      <Box py={10} textAlign="center">
-        <Heading as="h2" size="2xl" mb={6} color="yellow.600">
-          Melden Sie sich bei Ihrem Konto an
+    <Box
+      bgGradient="linear(to-r, gray.900, black)"
+      color="white"
+      minHeight="100vh"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      px={4}
+    >
+      <VStack
+        spacing={6}
+        bg="gray.800"
+        p={8}
+        borderRadius="xl"
+        boxShadow="2xl"
+        maxW="400px"
+        w="full"
+      >
+        <Heading size="lg" color="#cc9600" textAlign="center">
+          Willkommen zurück
         </Heading>
+        <Text fontSize="sm" color="gray.400" textAlign="center">
+          Melde dich an, um auf dein Konto zuzugreifen
+        </Text>
+        <Separator borderColor="gray.600" />
 
-        <Field label="Benutzername" invalid={errors.username}>
-          <Input
-            placeholder="me@example.com"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          {errors.username && (
-            <Text color="red.500" mt={1}>
-              Benutzername ist erforderlich.
-            </Text>
-          )}
-        </Field>
+        {error && (
+          <Text color="red.400" fontSize="sm" textAlign="center">
+            {error}
+          </Text>
+        )}
 
-        <Field label="Passwort" invalid={errors.password}>
-          <Input
-            placeholder="Passwort"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {errors.password && (
-            <Text color="red.500" mt={1}>
-              Passwort ist erforderlich.
-            </Text>
-          )}
-        </Field>
+        <VStack spacing={4} w="full">
+          <HStack w="full" spacing={3} bg="gray.700" p={3} borderRadius="md">
+            {/* <Icon as={FaUserAlt} color="gray.500" /> */}
+            <Input
+              placeholder="Benutzername"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              bg="transparent"
+              border="none"
+              focusBorderColor="transparent"
+              color="white"
+              _placeholder={{ color: 'gray.500' }}
+            />
+          </HStack>
+          <HStack w="full" spacing={3} bg="gray.700" p={3} borderRadius="md">
+            {/* <Icon as={FaLock} color="gray.500" /> */}
+            <Input
+              placeholder="Passwort"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              bg="transparent"
+              border="none"
+              focusBorderColor="transparent"
+              color="white"
+              _placeholder={{ color: 'gray.500' }}
+            />
+          </HStack>
+        </VStack>
 
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          style={{ marginTop: '10px' }}
+        <Button
+          w="full"
+          bg="#cc9600"
+          color="black"
+          size="lg"
+          _hover={{ bg: 'orange.500' }}
+          onClick={handleLogin}
         >
-          <Button colorScheme="teal" onClick={handleLogin}>
-            Anmelden
-          </Button>
-        </motion.div>
+          Einloggen
+        </Button>
 
-        {/* {(errors.username || errors.password) && (
-        <Alert status="error">
-            Benutzername oder Passwort ist falsch
-        </Alert>
-        )} */}
-      </Box>
-    </Container>
+        <Text fontSize="sm" color="gray.400" textAlign="center">
+          Hast du kein Konto?{' '}
+          <Text as="span" color="#cc9600" cursor="pointer">
+            Registrieren
+          </Text>
+        </Text>
+      </VStack>
+    </Box>
   );
 };
 
