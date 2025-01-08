@@ -297,7 +297,7 @@ const BuchÄndern = () => {
               </Text>
               <Input
                 name="isbn"
-                value={buchData.isbn}
+                value={buch.isbn}
                 onChange={handleInputChange}
                 fontSize="md"
                 color="black"
@@ -313,7 +313,7 @@ const BuchÄndern = () => {
               </Text>
               <Input
                 name="preis"
-                value={buchData.preis}
+                value={buch.preis}
                 onChange={handleInputChange}
                 fontSize="md"
                 color="black"
@@ -328,7 +328,7 @@ const BuchÄndern = () => {
               </Text>
               <Input
                 name="rabatt"
-                value={buchData.rabatt} // Rabatt direkt als Wert ohne "%"
+                value={buch.rabatt} // Rabatt direkt als Wert ohne "%"
                 onChange={handleInputChange}
                 fontSize="md"
                 color="black"
@@ -342,13 +342,13 @@ const BuchÄndern = () => {
                 Lieferbar
               </Text>
               <Flex align="center" gap={2}>
-                {buchData.lieferbar ? (
+                {buch.lieferbar ? (
                   <FaCheckCircle style={{ color: 'green', fontSize: '1.25rem' }} />
                 ) : (
                   <FaTimesCircle style={{ color: 'red', fontSize: '1.25rem' }} />
                 )}
                 <Text fontSize="md" color="black">
-                  {buchData.lieferbar ? 'Ja' : 'Nein'}
+                  {buch.lieferbar ? 'Ja' : 'Nein'}
                 </Text>
               </Flex>
             </Box>
@@ -360,7 +360,7 @@ const BuchÄndern = () => {
               </Text>
               <Input
                 name="datum"
-                value={buchData.datum}
+                value={buch.datum}
                 onChange={handleInputChange}
                 fontSize="md"
                 color="black"
@@ -375,7 +375,7 @@ const BuchÄndern = () => {
               </Text>
               <Input
                 name="homepage"
-                value={buchData.homepage}
+                value={buch.homepage}
                 onChange={handleInputChange}
                 fontSize="md"
                 color={isDarkMode ? '#000' : '#fff'}
