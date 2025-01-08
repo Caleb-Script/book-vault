@@ -8,7 +8,6 @@ import App from './App';
 import { Box } from '@chakra-ui/react/box';
 import { ClientOnly, Skeleton } from '@chakra-ui/react';
 import { ColorModeToggle } from './components/color-mode-toggle';
-import Navbar from './features/navbar';
 import ErrorBoundary from './components/ErrorBoundary';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
