@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom'; // Importiere useNavigate
-import { BUECHER } from '../graphql/queries.ts';
+import { BUECHER } from '../graphql/query/get-buch.query.ts';
 import img from './icon/vorstellung.png';
 
 const MotionFlex = motion(Flex);

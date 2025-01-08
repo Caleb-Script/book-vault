@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import BookCard from '../features/BookCard';
 import background from '../features/icon/background.png';
 import Navbar from '../features/navBar.js';
-import { BUECHER } from '../graphql/queries';
+import { BUECHER } from '../graphql/query/get-buch.query.js';
 
 interface Book {
   id: string;

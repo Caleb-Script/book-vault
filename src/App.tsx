@@ -6,7 +6,9 @@ import Navbar from './features/navBar';
 import Startseite from './pages/bücher';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
-import Login from './pages/login';
+// import Login from './pages/login';
+import LoginPage from './pages/kp';
+import UserPage from './pages/UserPage';
 import BuchAendern from './pages/ändereBuch';
 
 const App = () => {
@@ -46,6 +48,9 @@ const App = () => {
           {/* Startseite */}
           <Route path="/homepage" element={<Homepage />} />
 
+          {/* <PrivateRoute>
+
+          </PrivateRoute> */}
           {/* Homepage */}
           <Route path="/" element={<Startseite />} />
 
@@ -53,7 +58,8 @@ const App = () => {
           <Route path="/buch/:id" element={<BuchDetails />} />
           {/* Route zum Ändern eines Buchs */}
           <Route path="/buch/:id/bearbeiten" element={<BuchAendern />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/user" element={<UserPage />} />
         </Routes>
       </Box>
     </Flex>

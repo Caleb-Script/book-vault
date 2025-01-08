@@ -1,4 +1,4 @@
-import { BUECHER } from '@/graphql/queries.js';
+import { BUECHER } from '@/graphql/query/get-buch.query.js';
 import { useLazyQuery } from '@apollo/client';
 import {
   Box,
