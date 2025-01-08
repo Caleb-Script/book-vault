@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Box, Container, Grid, Text, Heading, Button} from '@chakra-ui/react';
-import { useQuery } from '@apollo/client';
-import { BUECHER } from '../graphql/queries';
-import Navbar from '../features/navBar.js';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useQuery } from '@apollo/client';
+import { Box, Button, Container, Grid, Heading, Text } from '@chakra-ui/react';
+import React, { useState } from 'react';
 import BookCard from '../features/BookCard';
 import background from '../features/icon/background.png';
+import Navbar from '../features/navBar.js';
+import { BUECHER } from '../graphql/queries';
 
 interface Book {
   id: string;
@@ -55,7 +55,9 @@ const SucheBuch: React.FC = () => {
   const books: Book[] = data?.buecher || [];
 
   const filteredBooks = books.filter((book) => {
-    const activeFilters = Object.keys(filters).filter((key) => filters[key as keyof typeof filters]);
+    const activeFilters = Object.keys(filters).filter(
+      (key) => filters[key as keyof typeof filters],
+    );
 
     if (activeFilters.length === 0) return true; // Keine Filter ausgewählt
 
@@ -63,8 +65,8 @@ const SucheBuch: React.FC = () => {
       ? Array.isArray(book.schlagwoerter)
         ? book.schlagwoerter.map((word) => word.toUpperCase())
         : typeof book.schlagwoerter === 'string'
-        ? [book.schlagwoerter.toUpperCase()]
-        : []
+          ? [book.schlagwoerter.toUpperCase()]
+          : []
       : [];
 
     return bookSchlagwoerter.some((word) => activeFilters.includes(word));
@@ -77,7 +79,7 @@ const SucheBuch: React.FC = () => {
   const totalPages = Math.ceil(filteredBooks.length / ITEMS_PER_PAGE);
   const paginatedBooks = filteredBooks.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   return (
@@ -138,8 +140,8 @@ const SucheBuch: React.FC = () => {
               border="1px solid #ddd"
               borderRadius="25px"
               overflow="hidden"
-              w="264px"  // Set width to 264px
-              h="436px"  // Set height to 436px
+              w="264px" // Set width to 264px
+              h="436px" // Set height to 436px
               alignItems="center"
               justifyContent="center"
             >
@@ -162,15 +164,15 @@ const SucheBuch: React.FC = () => {
             mx={2}
             w="80px"
             h="45px"
-            borderRadius="15px" 
-            bg={currentPage === 1 ? "rgba(0, 0, 0, 0.7)" : "#000000"}
+            borderRadius="15px"
+            bg={currentPage === 1 ? 'rgba(0, 0, 0, 0.7)' : '#000000'}
             color="#CC9600"
             _disabled={{
-              bg: "rgba(0, 0, 0, 0)",
-              cursor: "not-allowed",
+              bg: 'rgba(0, 0, 0, 0)',
+              cursor: 'not-allowed',
             }}
             _hover={{
-              bg: currentPage === 1 ? "rgba(0, 0, 0, 0.4)" : "#333333", // Hover-Effekt
+              bg: currentPage === 1 ? 'rgba(0, 0, 0, 0.4)' : '#333333', // Hover-Effekt
             }}
           >
             Previous
@@ -182,7 +184,11 @@ const SucheBuch: React.FC = () => {
                 w={4}
                 h={4}
                 borderRadius="full"
-                bg={currentPage === index + 1 ? "#CC9600" : "rgba(204, 150, 0, 0.4)"}
+                bg={
+                  currentPage === index + 1
+                    ? '#CC9600'
+                    : 'rgba(204, 150, 0, 0.4)'
+                }
                 cursor="pointer"
                 onClick={() => setCurrentPage(index + 1)}
                 transition="background-color 0.3s"
@@ -190,19 +196,21 @@ const SucheBuch: React.FC = () => {
             ))}
           </Box>
           <Button
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
             disabled={currentPage === totalPages}
             mx={2}
-            w="70px" 
-            h="45px" 
+            w="70px"
+            h="45px"
             borderRadius="15px"
-            bg={currentPage === totalPages ? "rgba(0, 0, 0, 0.7)" : "#000000"}
+            bg={currentPage === totalPages ? 'rgba(0, 0, 0, 0.7)' : '#000000'}
             color="#CC9600"
             _hover={{
-              bg: currentPage === totalPages ? "rgba(0, 0, 0, 0.7)" : "#333333",
+              bg: currentPage === totalPages ? 'rgba(0, 0, 0, 0.7)' : '#333333',
             }}
             _disabled={{
-              cursor: "not-allowed",
+              cursor: 'not-allowed',
             }}
           >
             Next

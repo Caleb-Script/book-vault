@@ -14,7 +14,7 @@
     "test:istanbul": "npm t -- --coverage",
     "depcheck": "depcheck",
     "eslint": "eslint src __tests__",
-    "prettier": "prettier --cache --write \"src/**/*.ts\""
+    "prettier": "prettier --cache --write \"src/**/*.ts\" \"src/**/*.tsx\""
   },
   "dependencies": {
     "@apollo/client": "^3.12.3",
@@ -43,6 +43,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.12.0",
+    "prettier-plugin-organize-imports": "4.1.0",
     "react-slick": "0.30.3",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.15.0",

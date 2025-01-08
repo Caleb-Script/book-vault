@@ -1,9 +1,9 @@
-import { NavLink } from 'react-router-dom';
 import { Box, Button } from '@chakra-ui/react';
+import { NavLink } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext.tsx';
+import '../pages/design/navbar.css';
 import CustomIcon from './icon.tsx';
 import dalle from './icon/DALLE.png';
-import '../pages/design/navbar.css';
-import { useTheme } from '../context/ThemeContext.tsx';
 
 const Links = [
   { name: 'Home', path: '/homepage' },
@@ -31,7 +31,10 @@ const Navbar = () => {
       {/* Logo Section */}
       <Box className="navbar-logo" display="flex" alignItems="center" gap={3}>
         <CustomIcon imageSrc={dalle} altText="DALLE" navigateTo="/" />
-        <h1 className="span" style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#cc9600' }}>
+        <h1
+          className="span"
+          style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#cc9600' }}
+        >
           Book Vault
         </h1>
       </Box>
@@ -42,9 +45,7 @@ const Navbar = () => {
           <NavLink
             key={name}
             to={path}
-            className={({ isActive }) =>
-              isActive ? 'active' : ''
-            }
+            className={({ isActive }) => (isActive ? 'active' : '')}
             style={{
               textDecoration: 'none',
               fontWeight: 'medium',

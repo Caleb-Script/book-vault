@@ -1,14 +1,18 @@
-import React from 'react';
 import { IconButton, Image } from '@chakra-ui/react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface CustomIconProps {
   imageSrc: string; // Pfad zum Bild
-  altText: string;  // Alternativtext für das Bild
+  altText: string; // Alternativtext für das Bild
   navigateTo: string; // Zielroute für die Navigation
 }
 
-const CustomIcon: React.FC<CustomIconProps> = ({ imageSrc, altText, navigateTo }) => {
+const CustomIcon: React.FC<CustomIconProps> = ({
+  imageSrc,
+  altText,
+  navigateTo,
+}) => {
   const navigate = useNavigate();
 
   const handleNavigation = (path: string) => {

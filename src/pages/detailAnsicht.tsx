@@ -5,8 +5,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Icon,
-  IconButton,
   Image,
   Link,
   Spinner,
@@ -14,16 +12,16 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
+import { isValidElement, ReactNode } from 'react';
 import { FaCheckCircle, FaStar, FaTimesCircle } from 'react-icons/fa';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import { Tag } from '../components/ui/tag';
+import { useTheme } from '../context/ThemeContext';
 import { BUCH, BUECHER } from '../graphql/queries';
 import '../styles/slick.css';
 import '../styles/slider.css';
 import { Buch } from '../types/buch.type';
-import { isValidElement, ReactNode } from 'react';
-import { useTheme } from '../context/ThemeContext';
 
 const BuchDetails = () => {
   const { id } = useParams();
@@ -160,7 +158,7 @@ const BuchDetails = () => {
                   mx="auto"
                   borderWidth="1px"
                   //borderColor={isDarkMode ? '#fff' : '#000'}
-                  borderColor={"#cc9600"}
+                  borderColor={'#cc9600'}
                 >
                   <Image
                     src={
@@ -284,7 +282,5 @@ const DetailBox = ({
     </Box>
   </Box>
 );
-
-
 
 export default BuchDetails;
