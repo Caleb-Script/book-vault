@@ -23,9 +23,11 @@ import '../styles/slick.css';
 import '../styles/slider.css';
 import { Buch } from '../types/buch.type';
 import { isValidElement, ReactNode } from 'react';
+import { useTheme } from '../context/ThemeContext';
 
 const BuchDetails = () => {
   const { id } = useParams();
+  const { isDarkMode } = useTheme();
 
   const { data, loading, error } = useQuery(BUCH, {
     variables: { id },
@@ -91,7 +93,7 @@ const BuchDetails = () => {
       py={10}
       px={5}
       color="white"
-      bgColor={'#000'}
+      bgColor={isDarkMode ? '#000' : '#fff'}
     >
       <Flex
         direction={{ base: 'column', lg: 'row' }}
@@ -107,7 +109,7 @@ const BuchDetails = () => {
             boxShadow="lg"
           />
           <Box textAlign="center">
-            <Heading as="h1" size="xl">
+            <Heading as="h1" size="xl" color="#cc9600">
               {buch.titel?.titel}
             </Heading>
             {buch.titel?.untertitel && (
@@ -151,11 +153,14 @@ const BuchDetails = () => {
                   key={similarBook.id}
                   textAlign="center"
                   p={3}
-                  bg="#1a1a1a"
+                  //bg={isDarkMode ? '#000' : '#fff'}
                   borderRadius="md"
                   boxShadow="lg"
                   maxW="200px"
                   mx="auto"
+                  borderWidth="1px"
+                  //borderColor={isDarkMode ? '#fff' : '#000'}
+                  borderColor={"#cc9600"}
                 >
                   <Image
                     src={
@@ -219,7 +224,11 @@ const BuchDetails = () => {
             <DetailBox
               label="Homepage"
               content={
-                <Link href={buch.homepage} color="#000" isExternal>
+                <Link
+                  href={buch.homepage}
+                  color={isDarkMode ? '#000' : '#fff'}
+                  isExternal
+                >
                   {buch.homepage}
                 </Link>
               }

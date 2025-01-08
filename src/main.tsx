@@ -9,11 +9,13 @@ import { Box } from '@chakra-ui/react/box';
 import { ClientOnly, Skeleton } from '@chakra-ui/react';
 import { ColorModeToggle } from './components/color-mode-toggle';
 import ErrorBoundary from './components/ErrorBoundary';
+import { ThemeProvider } from './context/ThemeContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary>
       <ApolloProvider client={client}>
+        <ThemeProvider>
         <Provider>
           <Router>
             <Box pos="absolute" top="4" right="4">
@@ -23,7 +25,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             </Box>
             <App />
           </Router>
-        </Provider>
+          </Provider>
+          </ThemeProvider>
       </ApolloProvider>
     </ErrorBoundary>
   </React.StrictMode>,

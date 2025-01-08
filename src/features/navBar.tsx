@@ -1,34 +1,25 @@
 import { NavLink } from 'react-router-dom';
-import { useState } from 'react';
+import { Box, Button } from '@chakra-ui/react';
 import CustomIcon from './icon.tsx';
 import dalle from './icon/DALLE.png';
 import '../pages/design/navbar.css';
-import { Box, Button } from '@chakra-ui/react';
-import { useColorModeValue } from '../components/ui/color-mode.tsx';
+import { useTheme } from '../context/ThemeContext.tsx';
 
 const Links = [
   { name: 'Home', path: '/homepage' },
-  { name: 'Detailierte Ansicht', path: '/detailAnsicht' },
   { name: 'Suche Buch', path: '/' },
-  { name: 'Ändere Buch', path: '/ändereBuch' },
   { name: 'Erstelle Buch', path: '/neuesBuch' },
-  { name: 'Login', path: '/login' }
+  { name: 'Login', path: '/login' },
 ];
 
 const Navbar = () => {
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  const backgroundColor = useColorModeValue('#fff', '#000');
-  const textColor = useColorModeValue('#000', '#fff');
-
-  const toggleBackground = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const { isDarkMode, toggleTheme } = useTheme();
 
   return (
     <Box
       className="navbar"
-      bg={backgroundColor}
-      color={textColor}
+      bg={isDarkMode ? '#000' : '#fff'}
+      color={isDarkMode ? '#fff' : '#000'}
       display="flex"
       justifyContent="space-between"
       alignItems="center"
@@ -52,9 +43,7 @@ const Navbar = () => {
             key={name}
             to={path}
             className={({ isActive }) =>
-              isActive
-                ? 'active'
-                : ''
+              isActive ? 'active' : ''
             }
             style={{
               textDecoration: 'none',
@@ -63,7 +52,7 @@ const Navbar = () => {
               padding: '5px 10px',
               borderRadius: '5px',
               transition: 'all 0.3s ease',
-              color: textColor
+              color: isDarkMode ? '#fff' : '#000',
             }}
           >
             {name}
@@ -73,9 +62,9 @@ const Navbar = () => {
 
       {/* Background Toggle Button */}
       <Button
-        onClick={toggleBackground}
-        bg={textColor}
-        color={backgroundColor}
+        onClick={toggleTheme}
+        bg={isDarkMode ? '#fff' : '#000'}
+        color={isDarkMode ? '#000' : '#fff'}
         _hover={{ bg: '#cc9600', color: '#000' }}
         size="sm"
         borderRadius="md"

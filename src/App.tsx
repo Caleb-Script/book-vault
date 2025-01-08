@@ -6,9 +6,18 @@ import Homepage from './pages/homepage';
 import Startseite from './pages/startseite';
 import Login from './pages/login';
 import BuchAendern from './pages/ändereBuch';
+import { useTheme } from './context/ThemeContext';
+import { useEffect } from 'react';
 
 const App = () => {
   const navbarHeight = '60px'; // Höhe der Navbar
+   const { isDarkMode } = useTheme();
+
+   useEffect(() => {
+     document.body.style.backgroundColor = isDarkMode ? '#000' : '#fff';
+     document.body.style.color = isDarkMode ? '#fff' : '#000';
+   }, [isDarkMode]);
+
 
   return (
     <Flex direction="column" height="100vh">
