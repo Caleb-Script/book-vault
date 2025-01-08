@@ -46,15 +46,16 @@ const Navbar = () => {
             key={name}
             to={path}
             className={({ isActive }) => (isActive ? 'active' : '')}
-            style={{
+            style={({ isActive }) => ({
               textDecoration: 'none',
               fontWeight: 'medium',
               fontSize: '1rem',
               padding: '5px 10px',
               borderRadius: '5px',
               transition: 'all 0.3s ease',
-              color: isDarkMode ? '#fff' : '#000',
-            }}
+              backgroundColor: isActive ? '#cc9600' : 'transparent',
+              color: isActive ? '#000' : isDarkMode ? '#fff' : '#000',
+            })}
           >
             {name}
           </NavLink>
