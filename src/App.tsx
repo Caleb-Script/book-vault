@@ -9,6 +9,7 @@ import Homepage from './pages/homepage';
 import LoginPage from './pages/kp';
 import UserPage from './pages/UserPage';
 import BuchAendern from './pages/ändereBuch';
+import Startseite from './pages/bücher';
 
 const App = () => {
   const navbarHeight = '60px'; // Höhe der Navbar
