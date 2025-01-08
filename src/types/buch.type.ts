@@ -35,3 +35,14 @@ type Abbildung = {
   beschriftung: string;
   contentType: string | undefined;
 };
+
+export type Suchkriterien = {
+    titel: string | undefined;
+    isbn: string | undefined;
+    rating: number | undefined;
+    art: BuchArt | undefined;
+    lieferbar: boolean | undefined;
+    rabatt: boolean | undefined;
+    };
+
+export type BuchArt = 'EPUB' | 'HARDCOVER' | 'PAPERBACK';

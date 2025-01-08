@@ -16,13 +16,19 @@ import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import FilterDialog from '../components/Filter';
 import { BUECHER } from '../graphql/queries';
-import { Buch } from '../types/buch.type';
+import { Buch, Suchkriterien } from '../types/buch.type';
 
 const Bücher = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isFilterDialogOpen, setIsFilterDialogOpen] = useState(false);
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState<Suchkriterien>({
+    titel: undefined,
+    isbn: undefined,
+    rating: undefined,
+    art: undefined,
+    lieferbar: undefined,
+    rabatt: undefined,
+  });
 
   const { data, loading, error, refetch } = useQuery<{ buecher: Buch[] }>(
     BUECHER,
@@ -43,12 +49,9 @@ const Bücher = () => {
     currentPage * booksPerPage,
   );
 
-  const openFilterDialog = () => setIsFilterDialogOpen(true);
-  const closeFilterDialog = () => setIsFilterDialogOpen(false);
-
-  const applyFilters = () => {
-    refetch(filters);
-    closeFilterDialog();
+  const applyFilters = (newFilters: any) => {
+    setFilters(newFilters);
+    refetch(newFilters);
   };
 
   if (loading) {
@@ -104,15 +107,7 @@ const Bücher = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <FilterDialog />
-        <Button
-          onClick={openFilterDialog}
-          bg="#cc9600"
-          color="black"
-          _hover={{ bg: 'orange.400' }}
-        >
-          Filter
-        </Button>
+        <FilterDialog applyFilters={applyFilters} />
       </HStack>
       <Grid
         templateColumns={{
@@ -130,6 +125,7 @@ const Bücher = () => {
             p={4}
             borderRadius="lg"
             boxShadow="lg"
+            borderColor={'#cc9600'}
             _hover={{
               transform: 'scale(1.05)',
               transition: 'all 0.3s ease-in-out',
@@ -202,46 +198,6 @@ const Bücher = () => {
           Weiter
         </Button>
       </HStack>
-
-      {/* Filter Dialog */}
-
-      {/* <Dialog isOpen={isFilterDialogOpen} onClose={closeFilterDialog}>
-        <DialogOverlay />
-        <DialogContent>
-          <DialogHeader>Filteroptionen</DialogHeader>
-          <DialogBody>
-            <HStack spacing={4}>
-              <Checkbox
-                isChecked={filters.lieferbar}
-                onChange={(e) =>
-                  setFilters((prev) => ({ ...prev, lieferbar: e.target.checked }))
-                }
-              >
-                Nur verfügbare Bücher
-              </Checkbox>
-              <NumberInput
-                value={filters.rating || ''}
-                onChange={(valueString) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    rating: valueString ? parseInt(valueString) : undefined,
-                  }))
-                }
-                placeholder="Min. Bewertung"
-                min={0}
-                max={5}
-              >
-                <NumberInputField />
-              </NumberInput>
-            </HStack>
-          </DialogBody>
-          <DialogFooter>
-            <Button onClick={applyFilters} bg="#cc9600" color="black" _hover={{ bg: 'orange.400' }}>
-              Anwenden
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog> */}
     </Box>
   );
 };
