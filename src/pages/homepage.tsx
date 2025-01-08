@@ -203,7 +203,6 @@ const Homepage: React.FC = () => {
         </Flex>
       </Container>
       <Vorstellung />
-      <Footer />
     </Box>
   );
 };
