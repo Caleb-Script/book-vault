@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useTheme } from './context/ThemeContext';
 import Navbar from './features/navBar';
-import Bücher from './pages/bücher';
+import Startseite from './pages/bücher';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
 import Login from './pages/login';
@@ -45,11 +45,10 @@ const App = () => {
       >
         <Routes>
           {/* Startseite */}
-          <Route path="/" element={<Startseite />} />
+          <Route path="/homepage" element={<Homepage />} />
 
           {/* Homepage */}
-          <Route path="/homepage" element={<Homepage />} />
-          <Route path="/asd" element={<Bücher />} />
+          <Route path="/" element={<Startseite />} />
 
           {/* Buchdetails */}
           <Route path="/buch/:id" element={<BuchDetails />} />

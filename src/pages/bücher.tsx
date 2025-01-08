@@ -18,7 +18,7 @@ import FilterDialog from '../components/Filter';
 import { BUECHER } from '../graphql/queries';
 import { Buch, Suchkriterien } from '../types/buch.type';
 
-const Bücher = () => {
+const Startseite = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState<Suchkriterien>({
@@ -202,4 +202,4 @@ const Bücher = () => {
   );
 };
 
-export default Bücher;
+export default Startseite;
