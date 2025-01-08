@@ -8,6 +8,7 @@ import Homepage from './pages/homepage';
 import Login from './pages/login';
 import Startseite from './pages/startseite';
 import BuchAendern from './pages/ändereBuch';
+import BuchErstellen from './pages/neuesBuch';
 
 const App = () => {
   const navbarHeight = '60px'; // Höhe der Navbar
@@ -51,8 +52,14 @@ const App = () => {
 
           {/* Buchdetails */}
           <Route path="/buch/:id" element={<BuchDetails />} />
-          {/* Route zum Ändern eines Buchs */}
+
+          {/* Route zum Erstellen eines Buches */}
+          <Route path="/neuesBuch" element={<BuchErstellen />} />
+
+          {/* Route zum Ändern eines Buches */}
           <Route path="/buch/:id/bearbeiten" element={<BuchAendern />} />
+
+          {/* Anmelden */}
           <Route path="/login" element={<Login />} />
         </Routes>
       </Box>
