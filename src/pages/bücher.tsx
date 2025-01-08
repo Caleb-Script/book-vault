@@ -13,7 +13,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import FilterDialog from '../components/Filter';
 import { BUECHER } from '../graphql/queries';
 import { Buch, Suchkriterien } from '../types/buch.type';
@@ -30,6 +30,7 @@ const Startseite = () => {
     rabatt: undefined,
   });
 
+  const navigate = useNavigate();
   const { data, loading, error, refetch } = useQuery<{ buecher: Buch[] }>(
     BUECHER,
     { variables: { ...filters } },
@@ -96,12 +97,12 @@ const Startseite = () => {
       <Heading textAlign="center" mb={8} color="#cc9600">
         Alle Bücher
       </Heading>
-      <HStack spacing={4} mb={8}>
+      <HStack gap={4} mb={8}>
         <Input
           placeholder="Suche nach einem Buch..."
           size="lg"
           borderColor="#cc9600"
-          focusBorderColor="#cc9600"
+          _focus={{ borderColor: "#cc9600" }}
           color="black"
           bg="white"
           value={searchTerm}
@@ -131,7 +132,7 @@ const Startseite = () => {
               transition: 'all 0.3s ease-in-out',
             }}
           >
-            <VStack align="start" spacing={4}>
+            <VStack align="start" gap={4}>
               <Image
                 src="https://via.placeholder.com/150"
                 alt={book.titel?.titel || 'Buch'}
@@ -150,7 +151,7 @@ const Startseite = () => {
                 )}
               </Box>
               <Text color="gray.300">Preis: {book.preis.toFixed(2)} EUR</Text>
-              <HStack spacing={4}>
+              <HStack gap={4}>
                 <Text
                   fontSize="sm"
                   color={book.lieferbar ? 'green.400' : 'red.400'}
@@ -160,12 +161,11 @@ const Startseite = () => {
                 <Text fontSize="sm">Bewertung: {book.rating}/5</Text>
               </HStack>
               <Button
-                as={RouterLink}
-                to={`/buch/${book.id}`}
                 bg="#cc9600"
                 color="black"
                 _hover={{ bg: 'orange.400' }}
                 size="sm"
+                onClick={() => navigate(`/buch/${book.id}`)}
               >
                 Details ansehen
               </Button>

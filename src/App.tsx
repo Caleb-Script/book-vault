@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useTheme } from './context/ThemeContext';
 import Navbar from './features/navBar';
-import Startseite from './pages/bücher';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
 import Login from './pages/login';

@@ -21,7 +21,7 @@ const Footer = () => {
         <Box>
           <Box
             as="a"
-            href="/homepage"
+            ref="/homepage"
             display="inline-block"
             className="footer"
           >
