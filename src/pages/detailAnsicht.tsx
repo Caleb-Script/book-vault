@@ -5,8 +5,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Icon,
-  IconButton,
   Image,
   Link,
   Spinner,
@@ -101,7 +99,7 @@ const BuchDetails = () => {
         gap={8}
       >
         {/* Linke Spalte: Bild, Titel und Aktionen */}
-        <VStack flex="1" spacing={6} align="center">
+        <VStack flex="1" gap={6} align="center">
           <Image
             src={buch.bild || 'https://via.placeholder.com/300'}
             alt={buch.titel?.titel || 'Buchbild'}
@@ -118,7 +116,7 @@ const BuchDetails = () => {
               </Text>
             )}
           </Box>
-          <Stack direction="row" spacing={4}>
+          <Stack direction="row" gap={4}>
             <Button
               colorScheme="yellow"
               variant="solid"
@@ -173,7 +171,7 @@ const BuchDetails = () => {
                     boxSize="150px"
                     objectFit="cover"
                   />
-                  <Text fontWeight="bold" color="#cc9600" noOfLines={2}>
+                  <Text fontWeight="bold" color="#cc9600" lineClamp={2}>
                     {similarBook?.titel?.titel}
                   </Text>
                   <Button
@@ -199,7 +197,7 @@ const BuchDetails = () => {
           <Heading as="h2" size="lg" mb={6} color="#cc9600">
             Details
           </Heading>
-          <Stack spacing={5}>
+          <Stack gap={5}>
             <DetailBox label="ISBN" content={buch.isbn} />
             <DetailBox label="Preis" content={`${buch.preis} EUR`} />
             <DetailBox label="Rabatt" content={`${buch.rabatt}%`} />
@@ -227,7 +225,8 @@ const BuchDetails = () => {
                 <Link
                   href={buch.homepage}
                   color={isDarkMode ? '#000' : '#fff'}
-                  isExternal
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {buch.homepage}
                 </Link>
@@ -236,7 +235,7 @@ const BuchDetails = () => {
             <DetailBox
               label="Bewertung"
               content={
-                <HStack spacing={1}>
+                <HStack gap={1}>
                   {Array.from({ length: 5 }, (_, i) => (
                     <FaStar key={i} color={i < buch.rating ? '#fff' : '#000'} />
                   ))}
@@ -246,7 +245,7 @@ const BuchDetails = () => {
             <DetailBox
               label="Schlagwörter"
               content={
-                <HStack wrap="wrap" spacing={2}>
+                <HStack wrap="wrap" gap={2}>
                   {buch.schlagwoerter.map((wort) => (
                     <Tag key={wort} size="lg" bg="#cc9600" color="black">
                       {wort}
