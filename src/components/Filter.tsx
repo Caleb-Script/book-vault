@@ -57,7 +57,7 @@ const FilterDialog = ({
   return (
     <DialogRoot>
       <DialogTrigger asChild>
-        <Button variant="outline" size="lg" colorScheme="yellow">
+        <Button variant="outline" size="lg" colorScheme="yellow" color="#cc9600">
           Filteroptionen öffnen
         </Button>
       </DialogTrigger>
