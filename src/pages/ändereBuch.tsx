@@ -314,6 +314,7 @@ const BuchÄndern = () => {
               <Input
                 name="preis"
                 value={buch.preis}
+                type="number"
                 onChange={handleInputChange}
                 fontSize="md"
                 color="black"
@@ -329,6 +330,7 @@ const BuchÄndern = () => {
               <Input
                 name="rabatt"
                 value={buch.rabatt} // Rabatt direkt als Wert ohne "%"
+                type="number"
                 onChange={handleInputChange}
                 fontSize="md"
                 color="black"
