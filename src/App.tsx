@@ -8,7 +8,7 @@ import Homepage from './pages/homepage';
 // import Login from './pages/login';
 import LoginPage from './pages/kp';
 import UserPage from './pages/UserPage';
-import BuchAendern from './pages/ändereBuch';
+import BuchÄndern from './pages/ändereBuch';
 import Startseite from './pages/bücher';
 
 const App = () => {
@@ -57,7 +57,8 @@ const App = () => {
           {/* Buchdetails */}
           <Route path="/buch/:id" element={<BuchDetails />} />
           {/* Route zum Ändern eines Buchs */}
-          <Route path="/buch/:id/bearbeiten" element={<BuchAendern />} />
+          <Route path="/bearbeiten/:id" element={<BuchÄndern />} />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/user" element={<UserPage />} />
         </Routes>

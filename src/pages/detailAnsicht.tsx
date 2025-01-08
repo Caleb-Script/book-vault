@@ -117,6 +117,7 @@ const BuchDetails = () => {
             )}
           </Box>
           <Stack direction="row" gap={4}>
+           <RouterLink to={`/bearbeiten/${buch.id}`}>
             <Button
               colorScheme="yellow"
               variant="solid"
@@ -125,6 +126,7 @@ const BuchDetails = () => {
             >
               Bearbeiten
             </Button>
+           </RouterLink>
             <Button
               colorScheme="red"
               variant="outline"
