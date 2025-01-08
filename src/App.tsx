@@ -7,7 +7,6 @@ import Startseite from './pages/bücher';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
 import Login from './pages/login';
-import Startseite from './pages/startseite';
 import BuchAendern from './pages/ändereBuch';
 
 const App = () => {
