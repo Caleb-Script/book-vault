@@ -45,5 +45,4 @@ export const BUECHER = gql`
         rabatt(short: $rabatt)
     }
 }
-
 `;

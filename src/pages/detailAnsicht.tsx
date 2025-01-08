@@ -5,6 +5,8 @@ import {
   Flex,
   Heading,
   HStack,
+  Icon,
+  IconButton,
   Image,
   Link,
   Spinner,
@@ -12,11 +14,15 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import { FaStar } from 'react-icons/fa';
+import { FaCheckCircle, FaStar, FaTimesCircle } from 'react-icons/fa';
 import { Link as RouterLink, useParams } from 'react-router-dom';
-import { Switch } from '../components/ui/switch';
+import Slider from 'react-slick';
 import { Tag } from '../components/ui/tag';
-import { BUCH } from '../graphql/queries';
+import { BUCH, BUECHER } from '../graphql/queries';
+import '../styles/slick.css';
+import '../styles/slider.css';
+import { Buch } from '../types/buch.type';
+import { isValidElement, ReactNode } from 'react';
 
 const BuchDetails = () => {
   const { id } = useParams();
@@ -25,10 +31,16 @@ const BuchDetails = () => {
     variables: { id },
   });
 
-  if (loading) {
+  const {
+    data: allBooksData,
+    loading: allBooksLoading,
+    error: allBooksError,
+  } = useQuery(BUECHER);
+
+  if (loading || allBooksLoading) {
     return (
-      <Flex align="center" justify="center" height="100vh" bg="gray.900">
-        <Spinner size="xl" color="orange.400" />
+      <Flex align="center" justify="center" height="100vh" bg="black">
+        <Spinner size="xl" color="#cc9600" />
         <Text fontSize="lg" color="white" ml={4}>
           Lade Buchdetails...
         </Text>
@@ -36,26 +48,50 @@ const BuchDetails = () => {
     );
   }
 
-  if (error) {
+  if (error || allBooksError) {
     return (
-      <Flex align="center" justify="center" height="100vh" bg="gray.900">
+      <Flex align="center" justify="center" height="100vh" bg="black">
         <Text fontSize="lg" color="red.500">
-          Fehler: {error.message}
+          Fehler: {error?.message || allBooksError?.message}
         </Text>
       </Flex>
     );
   }
 
   const buch: Buch = data.buch;
+  const allBooks: Buch[] = allBooksData.buecher || [];
+
+  const similarBooks = allBooks.filter((book) => {
+    if (!book || !book.schlagwoerter || !buch.schlagwoerter) return false;
+    if (book.id === buch.id) return false;
+    return book.schlagwoerter.some((tag) => buch.schlagwoerter.includes(tag));
+  });
+
+  const sliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
 
   return (
     <Box
       width="100vw"
       minHeight="100vh"
-      bgGradient="linear(to-b, gray.800, gray.900)"
+      bgGradient="linear(to-b, black, black)"
       py={10}
       px={5}
       color="white"
+      bgColor={'#000'}
     >
       <Flex
         direction={{ base: 'column', lg: 'row' }}
@@ -70,62 +106,120 @@ const BuchDetails = () => {
             borderRadius="lg"
             boxShadow="lg"
           />
-          {/* Titel und Untertitel */}
           <Box textAlign="center">
             <Heading as="h1" size="xl">
               {buch.titel?.titel}
             </Heading>
             {buch.titel?.untertitel && (
-              <Text fontSize="lg" fontStyle="italic" color="gray.400" mt={2}>
+              <Text fontSize="lg" fontStyle="italic" color="#cc9600" mt={2}>
                 {buch.titel.untertitel}
               </Text>
             )}
           </Box>
-          {/* Aktionen */}
           <Stack direction="row" spacing={4}>
-            <Button colorScheme="yellow" variant="solid">
+            <Button
+              colorScheme="yellow"
+              variant="solid"
+              bg="#cc9600"
+              color="black"
+            >
               Bearbeiten
             </Button>
-            <Button colorScheme="red" variant="outline">
+            <Button
+              colorScheme="red"
+              variant="outline"
+              borderColor="#cc9600"
+              color="#cc9600"
+            >
               Löschen
             </Button>
           </Stack>
           <RouterLink to="/">
-            <Button colorScheme="blue" size="lg">
+            <Button colorScheme="blue" size="lg" bg="#cc9600" color="black">
               Zurück zur Startseite
             </Button>
           </RouterLink>
+
+          {/* Ähnliche Bücher als Karussell */}
+          <Box mt={10} width="100%">
+            <Heading as="h3" size="lg" mb={5} color="#cc9600">
+              Ähnliche Bücher
+            </Heading>
+            <Slider {...sliderSettings}>
+              {similarBooks.map((similarBook) => (
+                <Box
+                  key={similarBook.id}
+                  textAlign="center"
+                  p={3}
+                  bg="#1a1a1a"
+                  borderRadius="md"
+                  boxShadow="lg"
+                  maxW="200px"
+                  mx="auto"
+                >
+                  <Image
+                    src={
+                      similarBook?.abbildungen?.[0]?.contentType ||
+                      'https://via.placeholder.com/150'
+                    }
+                    alt={similarBook?.titel?.titel}
+                    mb={2}
+                    borderRadius="md"
+                    boxSize="150px"
+                    objectFit="cover"
+                  />
+                  <Text fontWeight="bold" color="#cc9600" noOfLines={2}>
+                    {similarBook?.titel?.titel}
+                  </Text>
+                  <Button
+                    mt={3}
+                    size="sm"
+                    colorScheme="yellow"
+                    bg="#cc9600"
+                    color="black"
+                    onClick={() =>
+                      (window.location.href = `https://localhost:3001/buch/${similarBook.id}`)
+                    }
+                  >
+                    Details ansehen
+                  </Button>
+                </Box>
+              ))}
+            </Slider>
+          </Box>
         </VStack>
 
         {/* Rechte Spalte: Details */}
         <Box flex="2">
-          <Heading as="h2" size="lg" mb={6}>
+          <Heading as="h2" size="lg" mb={6} color="#cc9600">
             Details
           </Heading>
           <Stack spacing={5}>
             <DetailBox label="ISBN" content={buch.isbn} />
             <DetailBox label="Preis" content={`${buch.preis} EUR`} />
-            <DetailBox label="Rabatt" content={`${buch.rabatt}`} />
-             <DetailBox
+            <DetailBox label="Rabatt" content={`${buch.rabatt}%`} />
+            <DetailBox
               label="Lieferbar"
               content={
-                buch.lieferbar ? (
-                  <HStack>
-                    <Text>Ja</Text>
-                  </HStack>
-                ) : (
-                  <HStack>
-
-                    <Text>Nein</Text>
-                  </HStack>
-                )
+                <Flex align="center" gap={2}>
+                  {buch.lieferbar ? (
+                    <FaCheckCircle
+                      style={{ color: 'green', fontSize: '1.25rem' }}
+                    />
+                  ) : (
+                    <FaTimesCircle
+                      style={{ color: 'red', fontSize: '1.25rem' }}
+                    />
+                  )}
+                  <Text>{buch.lieferbar ? 'Ja' : 'Nein'}</Text>
+                </Flex>
               }
             />
             <DetailBox label="Datum" content={buch.datum} />
             <DetailBox
               label="Homepage"
               content={
-                <Link href={buch.homepage} color="teal.300" isExternal>
+                <Link href={buch.homepage} color="#000" isExternal>
                   {buch.homepage}
                 </Link>
               }
@@ -135,10 +229,7 @@ const BuchDetails = () => {
               content={
                 <HStack spacing={1}>
                   {Array.from({ length: 5 }, (_, i) => (
-                    <FaStar
-                      key={i}
-                      color={i < buch.rating ? 'orange' : 'gray'}
-                    />
+                    <FaStar key={i} color={i < buch.rating ? '#fff' : '#000'} />
                   ))}
                 </HStack>
               }
@@ -147,8 +238,8 @@ const BuchDetails = () => {
               label="Schlagwörter"
               content={
                 <HStack wrap="wrap" spacing={2}>
-                  {buch.schlagwoerter.map((wort: string) => (
-                    <Tag key={wort} size="lg" colorScheme="yellow">
+                  {buch.schlagwoerter.map((wort) => (
+                    <Tag key={wort} size="lg" bg="#cc9600" color="black">
                       {wort}
                     </Tag>
                   ))}
@@ -167,22 +258,24 @@ const DetailBox = ({
   content,
 }: {
   label: string;
-  content: React.ReactNode;
+  content: ReactNode;
 }) => (
   <Box
-    bg="gray.700"
+    bg="#cc9600"
     p={4}
     borderRadius="md"
     borderWidth="1px"
-    borderColor="gray.600"
+    borderColor="black"
   >
-    <Text fontSize="sm" color="gray.400" mb={2}>
+    <Text fontSize="sm" color="black" mb={2}>
       {label}
     </Text>
-    <Text fontSize="md" fontWeight="bold">
-      {content}
-    </Text>
+    <Box fontSize="md" fontWeight="bold" color="black">
+      {isValidElement(content) ? content : <Text>{content}</Text>}
+    </Box>
   </Box>
 );
+
+
 
 export default BuchDetails;
