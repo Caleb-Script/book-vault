@@ -85,7 +85,7 @@ const FilterDialog = ({
           </DialogTitle>
         </DialogHeader>
         <DialogBody>
-          <VStack spacing={6} align="stretch">
+          <VStack gap={6} align="stretch">
             <Box>
               <Text color="#cc9600" mb={2}>
                 ISBN:
@@ -96,7 +96,7 @@ const FilterDialog = ({
                 bg="gray.800"
                 borderColor="gray.600"
                 _hover={{ borderColor: '#cc9600' }}
-                focusBorderColor="#cc9600"
+                _focus={{ borderColor: "#cc9600" }}
                 value={filters.isbn || ''}
                 onChange={(e) =>
                   handleInputChange('isbn', e.target.value || undefined)
@@ -114,7 +114,7 @@ const FilterDialog = ({
                 bg="gray.800"
                 borderColor="gray.600"
                 _hover={{ borderColor: '#cc9600' }}
-                focusBorderColor="#cc9600"
+                _focus={{ borderColor: "#cc9600" }}
                 min={1}
                 max={5}
                 value={filters.rating || ''}
@@ -154,15 +154,15 @@ const FilterDialog = ({
             </Box>
             <Checkbox
               colorScheme="yellow"
-              isChecked={filters.lieferbar || false}
-              onChange={(e) => handleInputChange('lieferbar', e.target.checked)}
+              checked={filters.lieferbar || false}
+              onChange={(e) => handleInputChange('lieferbar', (e.target as HTMLInputElement).checked)}
             >
               Nur verfügbare Bücher
             </Checkbox>
             <Checkbox
               colorScheme="yellow"
-              isChecked={filters.rabatt || false}
-              onChange={(e) => handleInputChange('rabatt', e.target.checked)}
+              checked={filters.rabatt || false}
+              onChange={(e) => handleInputChange('rabatt', (e.target as HTMLInputElement).checked)}
             >
               Nur rabattierte Bücher
             </Checkbox>

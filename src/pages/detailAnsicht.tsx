@@ -101,7 +101,7 @@ const BuchDetails = () => {
         {/* Linke Spalte: Bild, Titel und Aktionen */}
         <VStack flex="1" gap={6} align="center">
           <Image
-            src={buch.bild || 'https://via.placeholder.com/300'}
+            src={buch.abbildungen?.[0]?.beschriftung || 'https://via.placeholder.com/300'}
             alt={buch.titel?.titel || 'Buchbild'}
             borderRadius="lg"
             boxShadow="lg"
