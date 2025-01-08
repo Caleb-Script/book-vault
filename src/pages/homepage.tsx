@@ -1,17 +1,16 @@
-import { BUECHER } from '@/graphql/queries.js';
+import { BUECHER } from '@/graphql/query/get-buch.query.js';
 import { useLazyQuery } from '@apollo/client';
 import {
   Box,
   Button,
   Container,
-  Flex,
   Heading,
   Input,
   Spinner,
   Text,
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ColorModeToggle } from '../components/color-mode-toggle.jsx';
 import Footer from '../features/footer';
@@ -113,21 +112,17 @@ const SearchBox: React.FC = () => {
 const Homepage: React.FC = () => {
   const [view, setView] = useState<'home' | 'search' | 'details'>('home');
 
-  const handlePrevious = () => {
-    if (view === 'details') {
-      setView('search');
-    } else if (view === 'search') {
-      setView('home');
-    }
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setView((prev) => {
+        if (prev === 'home') return 'search';
+        if (prev === 'search') return 'details';
+        return 'home';
+      });
+    }, 5000); // Ansicht wechselt alle 5 Sekunden
 
-  const handleNext = () => {
-    if (view === 'home') {
-      setView('search');
-    } else if (view === 'search') {
-      setView('details');
-    }
-  };
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
@@ -144,16 +139,8 @@ const Homepage: React.FC = () => {
           {view === 'search' && <SearchBox />}
           {view === 'details' && <Vorstellung />}
         </AnimatePresence>
-        <Flex mt={6}>
-          {view !== 'home' && (
-            <Button onClick={handlePrevious} mr={4}>
-              Previous
-            </Button>
-          )}
-          {view !== 'details' && <Button onClick={handleNext}>Next</Button>}
-        </Flex>
       </Container>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

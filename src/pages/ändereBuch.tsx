@@ -16,8 +16,8 @@ import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import { Switch } from '../components/ui/switch';
 import { Tag } from '../components/ui/tag';
-import { UPDATE_BUCH } from '../graphql/mutation'; // Mutation zum Aktualisieren des Buches
-import { BUCH } from '../graphql/queries';
+import { UPDATE_BUCH } from '../graphql/mutation/update-buch.mutation'; // Mutation zum Aktualisieren des Buches
+import { BUCH } from '../graphql/query/get-buch.query';
 
 const BuchÄndern = () => {
   const { id } = useParams();

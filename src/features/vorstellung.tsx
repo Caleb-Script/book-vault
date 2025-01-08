@@ -10,8 +10,8 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom'; // Importiere useNavigate
-import { BUECHER } from '../graphql/queries.ts';
+import { useNavigate } from 'react-router-dom';
+import { BUECHER } from '../graphql/query/get-buch.query.ts';
 import img from './icon/vorstellung.png';
 
 const MotionFlex = motion(Flex);
@@ -24,10 +24,27 @@ export const Vorstellung: React.FC = () => {
   const bgBox = useColorModeValue('white', 'black');
   const textBox = useColorModeValue('black', 'white');
 
-  if (loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error loading data: {error.message}</Text>;
+  if (loading) {
+    return (
+      <Flex justify="center" align="center" minHeight="300px">
+        <Text fontSize="lg" color="#CC9600">
+          Lade Daten...
+        </Text>
+      </Flex>
+    );
+  }
 
-  const buecher = data.buecher || [];
+  if (error) {
+    return (
+      <Flex justify="center" align="center" minHeight="300px">
+        <Text fontSize="lg" color="red.500">
+          Fehler beim Laden: {error.message}
+        </Text>
+      </Flex>
+    );
+  }
+
+  const buecher = data?.buecher || [];
 
   const handleDiscoverMore = () => {
     navigate('/alleBuecher');
@@ -47,10 +64,10 @@ export const Vorstellung: React.FC = () => {
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.5 }}
       >
+        {/* Bildbereich */}
         <MotionBox
           w={{ base: '100%', md: '50%' }}
           h="300px"
-          bg={bgBox}
           borderRadius="lg"
           display="flex"
           justifyContent="center"
@@ -61,11 +78,12 @@ export const Vorstellung: React.FC = () => {
           animate={{ scale: 1 }}
           transition={{ duration: 0.4 }}
         >
-          <Image src={img} alt="Icon" />
+          <Image src={img} alt="Vorstellung" objectFit="cover" />
         </MotionBox>
 
+        {/* Textbereich */}
         <VStack gap={4} align="start" w={{ base: '100%', md: '50%' }}>
-          <Heading as="h1" size="6xl">
+          <Heading as="h1" size="2xl">
             Deine Lieblings
             <span style={{ color: '#CC9600' }}>bücher sind hier!</span>
           </Heading>
@@ -73,45 +91,42 @@ export const Vorstellung: React.FC = () => {
             fontFamily="Bona Nova"
             letterSpacing="1.4px"
             lineHeight="shorter"
-            fontSize="22px"
-            color={useColorModeValue('black', 'white')}
+            fontSize="lg"
+            color={textBox}
           >
             Kaufe deine Lieblingsbücher ganz einfach online! Genieße exklusive
-            Angebote und Rabatte auf ausgewählte Titel. Tauche in unsere
-            Sammlung ein und entdecke Sonderangebote, die das Lesen
-            erschwinglicher machen. Jetzt einkaufen und bei jedem Kauf mehr
+            Angebote und Rabatte auf ausgewählte Titel. Entdecke Sonderangebote,
+            die das Lesen erschwinglicher machen. Jetzt einkaufen und mehr
             sparen!
           </Text>
           <Flex
             w="100%"
             justify="space-between"
-            color={useColorModeValue('black', 'yellow.300')}
+            color={useColorModeValue('black', '#CC9600')}
           >
             <VStack>
-              <Heading textAlign="left" size="xl" color="#CC9600">
+              <Heading size="lg" color="#CC9600">
                 {buecher.length}
               </Heading>
-              <Text color="#CC9600">Bücher im Sortiment</Text>
+              <Text>Bücher im Sortiment</Text>
             </VStack>
             <VStack>
-              <Heading size="xl" color="#CC9600">
+              <Heading size="lg" color="#CC9600">
                 1K+
               </Heading>
-              <Text color="#CC9600">Registrierte Mitglieder</Text>
+              <Text>Registrierte Mitglieder</Text>
             </VStack>
             <VStack>
-              <Heading size="xl" color="#CC9600">
+              <Heading size="lg" color="#CC9600">
                 50+
               </Heading>
-              <Text color="#CC9600">Standorte</Text>
+              <Text>Standorte</Text>
             </VStack>
           </Flex>
           <Button
-            bg="black"
+            bg="#CC9600"
             color="white"
-            borderColor="#CC9600"
-            borderRadius={10}
-            _hover={{ bg: '#CC9600' }}
+            _hover={{ bg: '#D4A000' }}
             size="lg"
             onClick={handleDiscoverMore}
           >

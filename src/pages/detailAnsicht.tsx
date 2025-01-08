@@ -18,7 +18,7 @@ import { Link as RouterLink, useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import { Tag } from '../components/ui/tag';
 import { useTheme } from '../context/ThemeContext';
-import { BUCH, BUECHER } from '../graphql/queries';
+import { BUCH, BUECHER } from '../graphql/query/get-buch.query';
 import '../styles/slick.css';
 import '../styles/slider.css';
 import { Buch } from '../types/buch.type';

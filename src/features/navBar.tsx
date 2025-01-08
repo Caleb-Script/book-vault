@@ -1,5 +1,7 @@
-import { Box, Button } from '@chakra-ui/react';
-import { NavLink } from 'react-router-dom';
+import { Box, Button, HStack, IconButton, Text } from '@chakra-ui/react';
+import { FaMoon, FaSun } from 'react-icons/fa';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.tsx';
 import { useTheme } from '../context/ThemeContext.tsx';
 import '../pages/design/navbar.css';
 import CustomIcon from './icon.tsx';
@@ -8,12 +10,19 @@ import dalle from './icon/DALLE.png';
 const Links = [
   { name: 'Home', path: '/homepage' },
   { name: 'Suche Buch', path: '/' },
-  { name: 'Erstelle Buch', path: '/neuesBuch' },
-  { name: 'Login', path: '/login' },
 ];
 
 const Navbar = () => {
   const { isDarkMode, toggleTheme } = useTheme();
+  const { isAuthenticated, logout, user } = useAuth();
+
+  const adminLinks = [{ name: 'Erstelle Buch', path: '/neuesBuch' }];
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/'); // Weiterleitung zur Startseite nach Logout
+  };
 
   return (
     <Box
@@ -41,7 +50,10 @@ const Navbar = () => {
 
       {/* Navigation Links */}
       <Box className="nav-links" display="flex" gap={5}>
-        {Links.map(({ name, path }) => (
+        {[
+          ...Links,
+          ...(isAuthenticated && user?.role === 'admin' ? adminLinks : []),
+        ].map(({ name, path }) => (
           <NavLink
             key={name}
             to={path}
@@ -60,19 +72,68 @@ const Navbar = () => {
             {name}
           </NavLink>
         ))}
+        {isAuthenticated && (
+          <NavLink
+            to="/user"
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            style={({ isActive }) => ({
+              textDecoration: 'none',
+              fontWeight: 'medium',
+              fontSize: '1rem',
+              padding: '5px 10px',
+              borderRadius: '5px',
+              transition: 'all 0.3s ease',
+              backgroundColor: isActive ? '#cc9600' : 'transparent',
+              color: isActive ? '#000' : isDarkMode ? '#fff' : '#000',
+            })}
+          >
+            {user?.username}
+          </NavLink>
+        )}
       </Box>
 
-      {/* Background Toggle Button */}
-      <Button
-        onClick={toggleTheme}
-        bg={isDarkMode ? '#fff' : '#000'}
-        color={isDarkMode ? '#000' : '#fff'}
-        _hover={{ bg: '#cc9600', color: '#000' }}
-        size="sm"
-        borderRadius="md"
-      >
-        {isDarkMode ? 'Helles Thema' : 'Dunkles Thema'}
-      </Button>
+      {/* User and Theme Toggle Section */}
+      <HStack spacing={4} alignItems="center">
+        {isAuthenticated && (
+          <IconButton
+            aria-label="Theme Toggle"
+            onClick={toggleTheme}
+            bg="transparent"
+            color={isDarkMode ? '#fff' : '#000'}
+            _hover={{ color: '#cc9600' }}
+          >
+            {isDarkMode ? <FaSun /> : <FaMoon />}
+          </IconButton>
+        )}
+
+        {!isAuthenticated ? (
+          <NavLink
+            to="/login"
+            style={{
+              textDecoration: 'none',
+              fontWeight: 'medium',
+              fontSize: '1rem',
+              padding: '5px 10px',
+              borderRadius: '5px',
+              transition: 'all 0.3s ease',
+              backgroundColor: 'transparent',
+              color: isDarkMode ? '#fff' : '#000',
+            }}
+          >
+            Login
+          </NavLink>
+        ) : (
+          <Button
+            onClick={handleLogout}
+            size="sm"
+            bg="#cc9600"
+            color="#000"
+            _hover={{ bg: 'orange.400' }}
+          >
+            Logout
+          </Button>
+        )}
+      </HStack>
     </Box>
   );
 };

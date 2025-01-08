@@ -15,7 +15,7 @@ import {
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FilterDialog from '../components/Filter';
-import { BUECHER } from '../graphql/queries';
+import { BUECHER } from '../graphql/query/get-buch.query';
 import { Buch, Suchkriterien } from '../types/buch.type';
 
 const Startseite = () => {

@@ -5,9 +5,11 @@ import { useTheme } from './context/ThemeContext';
 import Navbar from './features/navBar';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
-import Login from './pages/login';
-import Startseite from './pages/startseite';
+// import Login from './pages/login';
+import LoginPage from './pages/kp';
+import UserPage from './pages/UserPage';
 import BuchAendern from './pages/ändereBuch';
+import Startseite from './pages/bücher';
 import BuchErstellen from './pages/neuesBuch';
 
 const App = () => {
@@ -47,6 +49,9 @@ const App = () => {
           {/* Startseite */}
           <Route path="/homepage" element={<Homepage />} />
 
+          {/* <PrivateRoute>
+
+          </PrivateRoute> */}
           {/* Homepage */}
           <Route path="/" element={<Startseite />} />
 
@@ -58,9 +63,8 @@ const App = () => {
 
           {/* Route zum Ändern eines Buches */}
           <Route path="/buch/:id/bearbeiten" element={<BuchAendern />} />
-
-          {/* Anmelden */}
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/user" element={<UserPage />} />
         </Routes>
       </Box>
     </Flex>

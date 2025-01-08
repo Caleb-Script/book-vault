@@ -1,0 +1,16 @@
+Cookies
+Vorteile:
+
+Clientseitige Speicherung: Cookies werden im Browser gespeichert und bei jedem Request an den Server gesendet.
+Unabhängig vom Server: Benutzer bleiben eingeloggt, auch wenn der Server neu gestartet wird.
+Skalierbarkeit: Für serverseitige Sitzungen ist keine Speicherung in einer zentralen Datenbank oder einem Cache erforderlich.
+Einfache Implementierung: Libraries wie js-cookie erleichtern die Handhabung von Cookies.
+Nachteile:
+
+Sicherheitsrisiken: Wenn die Cookies nicht richtig konfiguriert sind, können sie anfällig für XSS- und CSRF-Angriffe sein.
+Lösung: Nutze Secure, HttpOnly, und SameSite Flags, um Cookies abzusichern.
+Datenlimit: Cookies haben eine maximale Größe von 4 KB, was für komplexe Nutzerdaten nicht ausreicht.
+Wann Cookies verwenden?
+
+Wenn du einen stateless Server benötigst, der keine serverseitige Speicherung von Sitzungsdaten erfordert.
+Für Single-Page-Applications (SPAs), die Zugriffstoken clientseitig verwalten.

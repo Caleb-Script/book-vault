@@ -1,4 +1,18 @@
-import { Box, createListCollection, Input, Text, VStack } from '@chakra-ui/react';
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from '@/components/ui/select';
+import {
+  Box,
+  createListCollection,
+  Input,
+  Text,
+  VStack,
+} from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import { Suchkriterien } from '../types/buch.type';
 import { Button } from './ui/button';
@@ -14,14 +28,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from './ui/dialog';
-import {
-  SelectContent,
-  SelectItem,
-  SelectLabel,
-  SelectRoot,
-  SelectTrigger,
-  SelectValueText,
-} from '@/components/ui/select';
 
 // Bucharten-Daten
 const buchArten = createListCollection({
@@ -36,8 +42,8 @@ const FilterDialog = ({
   applyFilters,
 }: {
   applyFilters: (filters: Suchkriterien) => void;
-  }) => {
-   const contentRef = useRef<HTMLDivElement>(null);
+}) => {
+  const contentRef = useRef<HTMLDivElement>(null);
   const [filters, setFilters] = useState<Suchkriterien>({
     titel: undefined,
     isbn: undefined,
@@ -57,7 +63,12 @@ const FilterDialog = ({
   return (
     <DialogRoot>
       <DialogTrigger asChild>
-        <Button variant="outline" size="lg" colorScheme="yellow" color="#cc9600">
+        <Button
+          variant="outline"
+          size="lg"
+          colorScheme="yellow"
+          color="#cc9600"
+        >
           Filteroptionen öffnen
         </Button>
       </DialogTrigger>
