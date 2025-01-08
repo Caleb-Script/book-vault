@@ -1,0 +1,15 @@
+export type Buch = {
+    id: number,
+    version: number,
+    isbn: string,
+    rating: number,
+    art: string,
+    preis: number,
+    rabatt: string,
+    lieferbar: boolean,
+    datum: string,
+    homepage: string,
+    schlagwoerter: string,
+    erzeugt: string,
+    aktualisiert: string,
+}
