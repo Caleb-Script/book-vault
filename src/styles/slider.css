@@ -1,0 +1,25 @@
+.slick-slider {
+  width: 90%;
+  /* Passe die Breite an */
+  max-width: 2000px;
+  /* Begrenze die maximale Breite */
+  margin: 0 auto;
+  /* Zentriere den Slider */
+}
+
+.slick-slide {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  padding: 5px;
+}
+
+.slick-prev,
+.slick-next {
+  font-size: 20px;
+  color: #cc9600;
+  z-index: 10;
+  transform: scale(0.8);
+  /* Verkleinert die Navigation */
+}

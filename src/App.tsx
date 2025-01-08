@@ -4,10 +4,7 @@ import Navbar from './features/navBar';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
 import Startseite from './pages/startseite';
-import Navbar from './features/navBar';
 import Login from './pages/login';
-import { Suspense } from 'react';
-import { Box, Flex } from '@chakra-ui/react';
 import BuchAendern from './pages/ändereBuch';
 
 const App = () => {
