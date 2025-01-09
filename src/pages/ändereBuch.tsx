@@ -9,34 +9,49 @@ import {
   HStack,
   Image,
   Input,
+  Spinner,
   Text,
+  Stack,
   VStack,
 } from '@chakra-ui/react';
+import { FaCheckCircle, FaStar, FaTimesCircle } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
-import { Switch } from '../components/ui/switch';
+import Slider from 'react-slick';
 import { Tag } from '../components/ui/tag';
+import { useTheme } from '../context/ThemeContext';
 import { UPDATE_BUCH } from '../graphql/mutation/update-buch.mutation'; // Mutation zum Aktualisieren des Buches
-import { BUCH } from '../graphql/query/get-buch.query';
+import { BUCH, BUECHER } from '../graphql/query/get-buch.query';
+import { Buch } from '../types/buch.type';
 
 const BuchÄndern = () => {
+  // Parameter aus der URL extrahieren
   const { id } = useParams();
+  const { isDarkMode } = useTheme(); // Dunkelmodus aus dem Kontext
   const navigate = useNavigate();
 
-  // GraphQL Query, um Buchdetails zu laden
+  // GraphQL Query zum Laden der Buchdetails
   const { data, loading, error } = useQuery(BUCH, {
     variables: { id },
   });
 
+  // Weitere Buchdaten für ähnliche Bücher
+  const {
+    data: allBooksData,
+    loading: allBooksLoading,
+    error: allBooksError,
+  } = useQuery(BUECHER);
+
   // GraphQL Mutation zum Aktualisieren des Buches
   const [updateBuch] = useMutation(UPDATE_BUCH, { client });
 
+  // Typen für Buchdaten
   type BuchTyp = {
     titel: string;
     untertitel: string;
     isbn: string;
-    preis: number; // Preis sollte ein number sein
-    rabatt: number; // Rabatt sollte ein number sein
+    preis: number;
+    rabatt: number;
     lieferbar: boolean;
     datum: string;
     homepage: string;
@@ -44,12 +59,13 @@ const BuchÄndern = () => {
     schlagwoerter: string[];
   };
 
+  // Zustand für Buchdaten initialisieren
   const [buch, setBuch] = useState<BuchTyp>({
     titel: '',
     untertitel: '',
     isbn: '',
-    preis: 0, // number
-    rabatt: 0, // number
+    preis: 0,
+    rabatt: 0,
     lieferbar: false,
     datum: '',
     homepage: '',
@@ -57,6 +73,7 @@ const BuchÄndern = () => {
     schlagwoerter: [],
   });
 
+  // Effekt: Wenn Buchdetails geladen sind, in den Zustand setzen
   useEffect(() => {
     if (data) {
       const buch = data.buch;
@@ -75,10 +92,9 @@ const BuchÄndern = () => {
     }
   }, [data]);
 
-  // Handler für die Eingabeänderungen
+  // Handler für Eingabeänderungen
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-
     setBuch((prevBuch) => ({
       ...prevBuch,
       [name]:
@@ -90,250 +106,321 @@ const BuchÄndern = () => {
     }));
   };
 
+  // Buchdaten aktualisieren
   const handleUpdate = async () => {
     try {
-      const preisFloat = buch.preis; // Ist bereits ein Float
-      const rabattFloat = buch.rabatt; // Ist bereits ein Float
-      console.log('Token im LocalStorage:', localStorage.getItem('authToken'));
+  
+      // Version aus den Buchdaten holen
+      const version = data?.buch?.version;
+  
+      if (version === undefined) {
+        throw new Error('Version fehlt in den Buchdaten.');
+      }
+  
       const result = await updateBuch({
         variables: {
           id,
+          version, // Version hinzufügen
           isbn: buch.isbn,
           rating: buch.rating,
-          preis: preisFloat, // Float-Wert
-          rabatt: rabattFloat, // Float-Wert
+          preis: buch.preis,
+          rabatt: buch.rabatt,
           lieferbar: buch.lieferbar,
           datum: buch.datum,
           homepage: buch.homepage,
           schlagwoerter: buch.schlagwoerter,
         },
       });
-
+  
       console.log('Update erfolgreich:', result);
       navigate(`/buch/${id}`);
+      alert('Das Buch wurde erfolgreich aktualisiert.');
     } catch (err) {
       console.error('Fehler beim Aktualisieren:', err);
+      alert('Es gab ein Problem beim Aktualisieren des Buches.');
     }
   };
+  
 
-  if (loading) {
+  // Lade- oder Fehlerzustände anzeigen
+  if (loading || allBooksLoading) {
     return (
-      <Flex align="center" justify="center" minH="100vh" bg="gray.800">
-        <Text fontSize="lg" color="white">
+      <Flex align="center" justify="center" height="100vh" bg="black">
+        <Spinner size="xl" color="#cc9600" />
+        <Text fontSize="lg" color="white" ml={4}>
           Lade Buchdetails...
         </Text>
       </Flex>
     );
   }
 
-  if (error) {
+  if (error || allBooksError) {
     return (
-      <Flex align="center" justify="center" minH="100vh" bg="gray.800">
-        <Text color="red.500">Fehler: {error.message}</Text>
+      <Flex align="center" justify="center" height="100vh" bg="black">
+        <Text fontSize="lg" color="red.500">
+          Fehler: {error?.message || allBooksError?.message}
+        </Text>
       </Flex>
     );
   }
 
-  const buchData = data.buch;
+  // Buchdaten und alle Bücher extrahieren
+  const buchData: Buch = data.buch;
+  const allBooks: Buch[] = allBooksData.buecher || [];
+
+  // Ähnliche Bücher filtern, basierend auf Schlagwörtern
+  const similarBooks = allBooks.filter((book) => {
+    if (!book || !book.schlagwoerter || !buch.schlagwoerter) return false;
+    if (book.id === buchData.id) return false; // Das aktuelle Buch nicht einbeziehen
+    return book.schlagwoerter.some((tag) => buch.schlagwoerter.includes(tag));
+  });
+
+  // Slider-Einstellungen für ähnliche Bücher
+  const sliderSettings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
 
   return (
-    <Box color="white" minH="100vh" p={10}>
-      <Flex direction={{ base: 'column', lg: 'row' }} gap={10}>
-        {/* Linke Spalte: Bild und Aktionen */}
-        <Box flex="1">
+    <Box
+      width="100vw"
+      minHeight="100vh"
+      bgGradient="linear(to-b, black, black)"
+      py={10}
+      px={5}
+      color="white"
+      bgColor={isDarkMode ? '#000' : '#fff'}
+    >
+      <Flex direction={{ base: 'column', lg: 'row' }} align={{ lg: 'flex-start' }} gap={8}>
+        {/* Linke Spalte: Bild, Titel und Aktionen */}
+        <VStack flex="1" gap={6} align="center">
           <Image
-            src="https://via.placeholder.com/150"
-            alt={buchData.id}
-            borderRadius="md"
-            mb={5}
+            src={buchData.abbildungen?.[0]?.beschriftung || 'https://via.placeholder.com/300'}
+            alt={buchData.titel?.titel || 'Buchbild'}
+            borderRadius="lg"
             boxShadow="lg"
           />
-          <Heading as="h2" size="lg" mb={3}>
-            {buchData.id}
-          </Heading>
-          <Text fontSize="md" mb={5} fontStyle="italic">
-            {buchData.art}
-          </Text>
-          <VStack gap={4}>
-            {/* Schaltfläche zur Bearbeitung */}
-            <Button colorScheme="yellow" size="lg" onClick={handleUpdate}>
-              Update
+          <Box textAlign="center">
+            <Heading as="h1" size="xl" color="#cc9600">
+              {buchData.titel?.titel}
+            </Heading>
+            {buchData.titel?.untertitel && (
+              <Text fontSize="lg" fontStyle="italic" color="#cc9600" mt={2}>
+                {buchData.titel.untertitel}
+              </Text>
+            )}
+          </Box>
+          <Stack direction="row" gap={4}>
+            <Button
+              colorScheme="yellow"
+              variant="solid"
+              bg="#cc9600"
+              color="black"
+              onClick={handleUpdate}
+            >
+              Updaten
             </Button>
-            <Button colorScheme="red" size="lg">
-              Delete
+            <Button
+              colorScheme="red"
+              variant="outline"
+              borderColor="#cc9600"
+              color="#cc9600"
+            >
+              Löschen
             </Button>
-          </VStack>
-          <RouterLink to={'/'}>
-            <Button colorScheme="blue">Startseite</Button>
+          </Stack>
+          <RouterLink to="/">
+            <Button colorScheme="blue" size="lg" bg="#cc9600" color="black">
+              Zurück zur Startseite
+            </Button>
           </RouterLink>
-        </Box>
+
+          {/* Ähnliche Bücher als Karussell */}
+          <Box mt={10} width="100%">
+            <Heading as="h3" size="lg" mb={5} color="#cc9600">
+              Ähnliche Bücher
+            </Heading>
+            <Slider {...sliderSettings}>
+              {similarBooks.map((similarBook) => (
+                <Box
+                  key={similarBook.id}
+                  textAlign="center"
+                  p={3}
+                  borderRadius="md"
+                  boxShadow="lg"
+                  maxW="200px"
+                  mx="auto"
+                  borderWidth="1px"
+                  borderColor={'#cc9600'}
+                >
+                  <Image
+                    src={similarBook?.abbildungen?.[0]?.contentType || 'https://via.placeholder.com/150'}
+                    alt={similarBook?.titel?.titel}
+                    mb={2}
+                    borderRadius="md"
+                    boxSize="150px"
+                    objectFit="cover"
+                  />
+                  <Text fontWeight="bold" color="#cc9600" lineClamp={2}>
+                    {similarBook?.titel?.titel}
+                  </Text>
+                  <Button
+                    mt={3}
+                    size="sm"
+                    colorScheme="yellow"
+                    bg="#cc9600"
+                    color="black"
+                    onClick={() =>
+                      (window.location.href = `https://localhost:3001/buch/${similarBook.id}`)
+                    }
+                  >
+                    Details ansehen
+                  </Button>
+                </Box>
+              ))}
+            </Slider>
+          </Box>
+        </VStack>
 
         {/* Rechte Spalte: Buchdetails und Bearbeitungsformular */}
         <Box flex="2">
-          <HStack align="start" gap={5} my={4}>
-            {/* ISBN */}
-            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-              <Text fontSize="sm" color="gray.400" mb={1}>
+          <Heading as="h2" size="lg" mb={6} color="#cc9600">
+            Details
+          </Heading>
+          <Stack gap={5}>
+            {/* Formularfelder für Buchdetails */}
+            <Box bg="#cc9600" p={4} borderRadius="md" borderWidth="1px" borderColor="black">
+              <Text fontSize="sm" color="black" mb={2}>
                 ISBN
               </Text>
               <Input
                 name="isbn"
                 value={buch.isbn}
                 onChange={handleInputChange}
-                bg="gray.700"
-                color="white"
-                border="none"
+                fontSize="md"
+                color="black"
+                mb={2}
               />
             </Box>
 
+            {/* Weitere Eingabefelder für Preis, Rabatt, Lieferbarkeit, Datum, Homepage, Bewertung und Schlagwörter */}
             {/* Preis */}
-            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-              <Text fontSize="sm" color="gray.400" mb={1}>
+            <Box bg="#cc9600" p={4} borderRadius="md" borderWidth="1px" borderColor="black">
+              <Text fontSize="sm" color="black" mb={2}>
                 Preis
               </Text>
               <Input
                 name="preis"
                 value={buch.preis}
-                onChange={handleInputChange}
-                bg="gray.700"
-                color="white"
                 type="number"
-                border="none"
+                onChange={handleInputChange}
+                fontSize="md"
+                color="black"
+                mb={2}
               />
             </Box>
 
             {/* Rabatt */}
-            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-              <Text fontSize="sm" color="gray.400" mb={1}>
+            <Box bg="#cc9600" p={4} borderRadius="md" borderWidth="1px" borderColor="black">
+              <Text fontSize="sm" color="black" mb={2}>
                 Rabatt
               </Text>
               <Input
                 name="rabatt"
                 value={buch.rabatt} // Rabatt direkt als Wert ohne "%"
+                type="number"
                 onChange={handleInputChange}
-                bg="gray.700"
-                color="white"
-                type="number" // Setzen Sie den Typ als "number"
-                border="none"
+                fontSize="md"
+                color="black"
+                mb={2}
               />
             </Box>
 
-            {/* Lieferbar */}
-            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-              <Text fontSize="sm" color="gray.400" mb={1}>
+            {/* Lieferbarkeit */}
+            <Box bg="#cc9600" p={4} borderRadius="md" borderWidth="1px" borderColor="black">
+              <Text fontSize="sm" color="black" mb={2}>
                 Lieferbar
               </Text>
-              <Switch
-                name="lieferbar"
-                checked={buch.lieferbar}
-                inputProps={{ onChange: handleInputChange }}
-                colorScheme="green"
-              />
+              <Flex align="center" gap={2}>
+                {buch.lieferbar ? (
+                  <FaCheckCircle style={{ color: 'green', fontSize: '1.25rem' }} />
+                ) : (
+                  <FaTimesCircle style={{ color: 'red', fontSize: '1.25rem' }} />
+                )}
+                <Text fontSize="md" color="black">
+                  {buch.lieferbar ? 'Ja' : 'Nein'}
+                </Text>
+              </Flex>
             </Box>
-          </HStack>
 
-          <HStack align="start" gap={5} my={4}>
-            {/* Datum */}
-            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-              <Text fontSize="sm" color="gray.400" mb={1}>
+            {/* Weitere Eingabefelder für Datum und Homepage */}
+            <Box bg="#cc9600" p={4} borderRadius="md" borderWidth="1px" borderColor="black">
+              <Text fontSize="sm" color="black" mb={2}>
                 Datum
               </Text>
               <Input
                 name="datum"
                 value={buch.datum}
                 onChange={handleInputChange}
-                bg="gray.700"
-                color="white"
-                type="date"
-                border="none"
+                fontSize="md"
+                color="black"
+                mb={2}
               />
             </Box>
 
             {/* Homepage */}
-            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-              <Text fontSize="sm" color="gray.400" mb={1}>
+            <Box bg="#cc9600" p={4} borderRadius="md" borderWidth="1px" borderColor="black">
+              <Text fontSize="sm" color="black" mb={2}>
                 Homepage
               </Text>
               <Input
                 name="homepage"
                 value={buch.homepage}
                 onChange={handleInputChange}
-                bg="gray.700"
-                color="white"
-                type="text"
-                border="none"
+                fontSize="md"
+                color={isDarkMode ? '#000' : '#fff'}
               />
             </Box>
 
             {/* Bewertung */}
-            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-              <Text fontSize="sm" color="gray.400" mb={1}>
+            <Box bg="#cc9600" p={4} borderRadius="md" borderWidth="1px" borderColor="black">
+              <Text fontSize="sm" color="black" mb={2}>
                 Bewertung
               </Text>
-              <HStack>
-                {[...Array(5)].map((_, i) => (
-                  <Badge
-                    key={i}
-                    colorScheme={i < buch.rating ? 'yellow' : 'gray'}
-                    px={2}
-                    borderRadius="full"
-                  >
-                    ★
-                  </Badge>
+              <HStack gap={1}>
+                {Array.from({ length: 5 }, (_, i) => (
+                  <FaStar key={i} color={i < buch.rating ? '#fff' : '#000'} />
                 ))}
               </HStack>
             </Box>
-          </HStack>
 
-          <HStack align="start" gap={5} my={4}>
             {/* Schlagwörter */}
-            <Box borderWidth="1px" borderRadius="md" p={4} bg="gray.800">
-              <Text fontSize="sm" color="gray.400" mb={1}>
+            <Box bg="#cc9600" p={4} borderRadius="md" borderWidth="1px" borderColor="black">
+              <Text fontSize="sm" color="black" mb={2}>
                 Schlagwörter
               </Text>
-              <HStack gap={2}>
+              <HStack wrap="wrap" gap={2}>
                 {buch.schlagwoerter.map((wort) => (
-                  <Tag
-                    key={wort}
-                    size="lg"
-                    variant="solid"
-                    colorScheme="yellow"
-                  >
+                  <Tag key={wort} fontSize="md" size="lg" bg="#cc9600" color="black">
                     {wort}
                   </Tag>
                 ))}
               </HStack>
             </Box>
-          </HStack>
+          </Stack>
         </Box>
       </Flex>
-
-      {/* Ähnliche Bücher */}
-      <Box mt={10}>
-        <Heading as="h3" size="lg" mb={5}>
-          Ähnliche Bücher
-        </Heading>
-        <Flex gap={5}>
-          <Box textAlign="center">
-            <Image
-              src="https://via.placeholder.com/100"
-              alt="Epsilon"
-              mb={2}
-              borderRadius="md"
-            />
-            <Text>Epsilon</Text>
-          </Box>
-          <Box textAlign="center">
-            <Image
-              src="https://via.placeholder.com/100"
-              alt="Phi"
-              mb={2}
-              borderRadius="md"
-            />
-            <Text>Phi</Text>
-          </Box>
-        </Flex>
-      </Box>
     </Box>
   );
 };
