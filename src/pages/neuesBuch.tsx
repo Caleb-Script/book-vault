@@ -12,6 +12,9 @@ import {
   Button,
   Flex,
   Heading,
+  HStack,
+  SliderThumb,
+  SliderTrack,
   Text,
   VStack,
   // Wrap,
@@ -26,6 +29,7 @@ import DateiUploadSection from '../components/DateiUploadSection';
 import FormSection from '../components/FormSection';
 import { validateFields } from '../components/Validation';
 import { Buch } from '../types/buch.type';
+import { FaStar } from 'react-icons/fa';
 
 const Schlagwoerter = ['JAVASCRIPT', 'TYPESCRIPT', 'JAVA', 'PYTHON'];
 
@@ -38,7 +42,7 @@ const BuchErstellen = () => {
     rating: 0,
     art: 'EPUB',
     preis: 0,
-    rabatt: 0,
+    rabatt: '0',
     lieferbar: false,
     datum: '',
     homepage: '',
@@ -73,14 +77,20 @@ const BuchErstellen = () => {
   };
 
   const handleSubmit = async () => {
-    const validationErrors = validateFields(buch);
+    const validationErrors = validateFields(buch)
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
     try {
-      console.log('Buch erfolgreich erstellt:', buch);
+      const buchData = {
+        ...buch,
+        rabatt: `${parseInt(buch.rabatt, 10) || 0}`, // Rabatt in String umwandeln
+      };
+
+      console.log('Buch erfolgreich erstellt:', buchData);
       navigate('/');
     } catch (error) {
       console.error('Fehler beim Erstellen des Buches:', error);
@@ -133,25 +143,34 @@ const BuchErstellen = () => {
             type="number"
             error={errors.preis}
           />
+          <FormSection
+            label="Homepage"
+            name="homepage"
+            value={buch.homepage}
+            onChange={handleInputChange}
+            error={errors.homepage}
+          />
+
           {/* Rabatt */}
           <Flex direction="column">
             <Text>Rabatt (%)</Text>
             <Slider
-              value={buch.rabatt}
+              value={[parseInt(buch.rabatt, 10) || 0]} // Slider braucht eine Zahl
               onValueChange={(value) =>
-                setBuch((prev) => ({ ...prev, rabatt: value[0] }))
+                setBuch((prev) => ({
+                  ...prev,
+                  rabatt: value.value.toString(), // Konvertiere zurück zu String
+                }))
               }
               max={100}
               min={0}
               step={1}
               size="lg"
               colorPalette="green"
-            >
-              {/* <SliderTrack />
-              <SliderThumb /> */}
-            </Slider>
+            ></Slider>
             <Text mt={2}>{buch.rabatt}%</Text>
           </Flex>
+
           {/* Art */}
           <Box>
             <Text>Art</Text>
@@ -168,13 +187,35 @@ const BuchErstellen = () => {
               </SelectTrigger>
               <SelectContent>
                 {['EPUB', 'HARDCOVER', 'PAPERBACK'].map((art) => (
-                  <SelectItem key={art} value={art}>
+                  <SelectItem key={art} item={art}>
                     {art}
                   </SelectItem>
                 ))}
               </SelectContent>
             </SelectRoot>
           </Box>
+
+          <Flex direction="column">
+            <Text>Bewertung (Rating)</Text>
+            <HStack mt={2} spacing={1}>
+              {Array.from({ length: 5 }, (_, i) => (
+                <FaStar
+                  key={i}
+                  size="1.5em"
+                  cursor="pointer"
+                  color={i < buch.rating ? '#ffc107' : 'gray.300'}
+                  onClick={() =>
+                    setBuch((prev) => ({
+                      ...prev,
+                      rating: i + 1, // Aktualisiert die Bewertung basierend auf dem angeklickten Stern
+                    }))
+                  }
+                />
+              ))}
+            </HStack>
+            <Text mt={2}>{buch.rating} von 5</Text>
+          </Flex>
+
           {/* Datum */}
           <Flex direction="column">
             <Text>Veröffentlichungsdatum</Text>

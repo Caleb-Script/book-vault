@@ -57,6 +57,7 @@ const App = () => {
 
           {/* Buchdetails */}
           <Route path="/buch/:id" element={<BuchDetails />} />
+          <Route path="/neuesBuch" element={<BuchErstellen />} />
 
           {/* Route zum Ändern eines Buches */}
           <Route path="/buch/:id/bearbeiten" element={<BuchAendern />} />
