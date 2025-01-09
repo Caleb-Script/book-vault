@@ -2,15 +2,15 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useTheme } from './context/ThemeContext';
+import Footer from './features/footer';
 import Navbar from './features/navBar';
+import Startseite from './pages/bücher';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
-import Footer from './features/footer';
-import Startseite from './pages/bücher';
 import LoginPage from './pages/login';
+import BuchErstellen from './pages/neuesBuch';
 import UserPage from './pages/UserPage';
 import BuchAendern from './pages/ändereBuch';
-import BuchErstellen from './pages/neuesBuch';
 
 const App = () => {
   const navbarHeight = '60px'; // Höhe der Navbar

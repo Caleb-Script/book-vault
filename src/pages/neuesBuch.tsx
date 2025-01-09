@@ -1,321 +1,249 @@
-import client from '@/api/apolloClient';
-import { useMutation } from '@apollo/client';
+import {
+  SelectContent,
+  SelectItem,
+  SelectLabel,
+  SelectRoot,
+  SelectTrigger,
+  SelectValueText,
+} from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 import {
   Box,
   Button,
   Flex,
   Heading,
-  Input,
   Text,
   VStack,
+  // Wrap,
+  // WrapItem,
 } from '@chakra-ui/react';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
-import { Switch } from '../components/ui/switch';
-import { CREATE_BUCH } from '../graphql/mutation/create-buch.mutation';
+import AbbildungenSection from '../components/AbbildungenSection';
+import DateiUploadSection from '../components/DateiUploadSection';
+import FormSection from '../components/FormSection';
+import { validateFields } from '../components/Validation';
+import { Buch } from '../types/buch.type';
+
+const Schlagwoerter = ['JAVASCRIPT', 'TYPESCRIPT', 'JAVA', 'PYTHON'];
 
 const BuchErstellen = () => {
   const navigate = useNavigate();
-  const [message, setMessage] = useState({ text: '', type: '' });
-
-  // type BuchTyp = {
-  //   titel: string;
-  //   untertitel: string;
-  //   isbn: string;
-  //   preis: number;
-  //   rabatt: number;
-  //   lieferbar: boolean;
-  //   datum: string;
-  //   homepage: string;
-  //   rating: number;
-  //   schlagwoerter: string[];
-  // };
-
-  const [buch, setBuch] = useState({
+  const [buch, setBuch] = useState<Buch>({
+    id: 0,
+    version: 1,
     isbn: '',
     rating: 0,
-    art: '',
+    art: 'EPUB',
     preis: 0,
     rabatt: 0,
     lieferbar: false,
     datum: '',
     homepage: '',
     schlagwoerter: [],
-    titel: {
-      titel: '',
-      untertitel: '',
-    },
-    abbildungen: [{
-      beschriftung: '',
-      contentType: ''
-    }]
+    titel: { id: undefined, titel: '', untertitel: '' },
+    abbildungen: [],
+    datei: { id: undefined, filename: '', data: undefined, buch: undefined },
+    erzeugt: '',
+    aktualisiert: '',
   });
 
-  const [createBuch] = useMutation(CREATE_BUCH, {
-    client,
-    onCompleted: (data) => {
-      setMessage({ text: `Das Buch "${data.createBuch.titel}" wurde erfolgreich erstellt!`, type: 'success' });
-      setTimeout(() => {
-        navigate('/'); // oder wohin auch immer nach dem Erstellen navigiert werden soll
-      }, 2000);
-    },
-    onError: () => {
-      setMessage({ text: 'Das Buch konnte nicht erstellt werden.', type: 'error' });
-      setTimeout(() => {
-        setMessage({ text: '', type: '' });
-      }, 3000);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setBuch((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: '' }));
     }
-  });
+  };
 
-    // Handler für die Eingabeänderungen
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value, type, checked } = e.target;
-
-      setBuch((prev) => ({
+  const handleSchlagwortToggle = (schlagwort: string) => {
+    setBuch((prev) => {
+      const isSelected = prev.schlagwoerter.includes(schlagwort);
+      return {
         ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      }));
-    };
+        schlagwoerter: isSelected
+          ? prev.schlagwoerter.filter((tag) => tag !== schlagwort)
+          : [...prev.schlagwoerter, schlagwort],
+      };
+    });
+  };
 
-    const handleCreate = async () => {
-      try {
-        await createBuch({
-          variables: {
-            input: {
-              ...buch,
-              preis: Number(buch.preis),
-              rabatt: Number(buch.rabatt),
-            },
-          },
-        });
-      } catch (err) {
-        console.error('Fehler beim Erstellen des Buches:', err);
-      }
-    };
+  const handleSubmit = async () => {
+    const validationErrors = validateFields(buch);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
-const handleAbbildungChange = (
-  e: React.ChangeEvent<HTMLInputElement>,
-  index: number,
-  field: 'beschriftung' | 'contentType'
-) => {
-  const { value } = e.target;
-
-  setBuch((prevBuch) => {
-    const updatedAbbildungen = [...prevBuch.abbildungen];
-    updatedAbbildungen[index] = {
-      ...updatedAbbildungen[index],
-      [field]: value,
-    };
-    return { ...prevBuch, abbildungen: updatedAbbildungen };
-  });
-};
-
-  const addAbbildung = () => {
-    setBuch((prevBuch) => ({
-      ...prevBuch,
-      abbildungen: [...prevBuch.abbildungen, { beschriftung: '', contentType: '' }],
-    }));
+    try {
+      console.log('Buch erfolgreich erstellt:', buch);
+      navigate('/');
+    } catch (error) {
+      console.error('Fehler beim Erstellen des Buches:', error);
+    }
   };
 
   return (
     <Box maxW="800px" mx="auto" color="white" minH="100vh" p={10}>
-        {message.text && (
-        <Box
-          p={4}
-          mb={4}
-          borderRadius="md"
-          bg={message.type === 'success' ? 'green.500' : 'red.500'}
-        >
-          {message.text}
-        </Box>
-      )}
-
       <Flex direction="column" gap={8}>
         <Heading as="h1" size="xl">
           Neues Buch erstellen
         </Heading>
-
         <VStack gap={6} align="stretch">
-
-          {/* ISBN */}
-          <Box>
-            <Text>ISBN</Text>
-            <Input
-              name="isbn"
-              value={buch.isbn}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-            />
-          </Box>
-
-          {/* Rating */}
-          <Box>
-            <Text>Rating</Text>
-            <Input
-              name="rating"
-              value={buch.rating}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-              type="number"
-            />
-          </Box>
-
-          {/* Art
+          <FormSection
+            label="ISBN"
+            name="isbn"
+            value={buch.isbn}
+            onChange={handleInputChange}
+            error={errors.isbn}
+          />
+          <FormSection
+            label="Titel"
+            name="titel"
+            value={buch.titel.titel}
+            onChange={(e) =>
+              setBuch((prev) => ({
+                ...prev,
+                titel: { ...prev.titel, titel: e.target.value },
+              }))
+            }
+            error={errors.titel}
+          />
+          <FormSection
+            label="Untertitel"
+            name="untertitel"
+            value={buch.titel.untertitel}
+            onChange={(e) =>
+              setBuch((prev) => ({
+                ...prev,
+                titel: { ...prev.titel, untertitel: e.target.value },
+              }))
+            }
+            error={errors.untertitel}
+          />
+          <FormSection
+            label="Preis"
+            name="preis"
+            value={buch.preis}
+            onChange={handleInputChange}
+            type="number"
+            error={errors.preis}
+          />
+          {/* Rabatt */}
+          <Flex direction="column">
+            <Text>Rabatt (%)</Text>
+            <Slider
+              value={buch.rabatt}
+              onValueChange={(value) =>
+                setBuch((prev) => ({ ...prev, rabatt: value[0] }))
+              }
+              max={100}
+              min={0}
+              step={1}
+              size="lg"
+              colorPalette="green"
+            >
+              {/* <SliderTrack />
+              <SliderThumb /> */}
+            </Slider>
+            <Text mt={2}>{buch.rabatt}%</Text>
+          </Flex>
+          {/* Art */}
           <Box>
             <Text>Art</Text>
-            <Input
-              name="art"
+            <SelectRoot
+              items={['EPUB', 'HARDCOVER', 'PAPERBACK']}
               value={buch.art}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-              type="number"
-            />
-          </Box> */}
-
-          {/* Preis */}
-          <Box>
-            <Text>Preis</Text>
-            <Input
-              name="preis"
-              value={buch.preis}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-              type="number"
-            />
-          </Box>
-
-          {/* Rabatt */}
-          <Box>
-            <Text>Rabatt</Text>
-            <Input
-              name="rabatt"
-              value={buch.rabatt}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-              type="number"
-            />
-          </Box>
-
-          {/* Lieferbar */}
-          <Box>
-            <Text>Lieferbar</Text>
-            <Switch
-              name="lieferbar"
-              checked={buch.lieferbar}
-              onCheckedChange={(checked) =>
-                handleInputChange({
-                  target: { name: 'lieferbar', checked, type: 'checkbox' },
-                } as any)
+              onValueChange={(value) =>
+                setBuch((prev) => ({ ...prev, art: value }))
               }
-              colorScheme="green"
-            />
+            >
+              <SelectLabel>Buchart</SelectLabel>
+              <SelectTrigger>
+                <SelectValueText />
+              </SelectTrigger>
+              <SelectContent>
+                {['EPUB', 'HARDCOVER', 'PAPERBACK'].map((art) => (
+                  <SelectItem key={art} value={art}>
+                    {art}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
           </Box>
-
           {/* Datum */}
-          <Box>
-            <Text>Datum</Text>
-            <Input
-              name="datum"
-              value={buch.datum}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-              type="date"
-            />
-          </Box>
-
-          {/* Homepage */}
-          <Box>
-            <Text>Homepage</Text>
-            <Input
-              name="homepage"
-              value={buch.homepage}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-            />
-          </Box>
-
-          {/* Schlagwörter */}
-          <Box>
-            <Text>Schlagwörter</Text>
-            <Input
-              name="schlagwörter"
-              value={buch.schlagwoerter}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-            />
-          </Box>
-
-          {/* Titel */}
-          <Box>
-            <Text>Titel</Text>
-            <Input
-              name="titel"
-              value={buch.titel.titel}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-            />
-          </Box>
-
-          {/* Untertitel */}
-          <Box>
-            <Text>Untertitel</Text>
-            <Input
-              name="untertitel"
-              value={buch.titel.untertitel}
-              onChange={handleInputChange}
-              bg="gray.700"
-              color="white"
-            />
-          </Box>
-
-          <Box>  
-          <Heading as="h1" size="xl">
-            Abbildungen
-          </Heading>
-          {buch.abbildungen.map((abbildung, index) => (
-            <Box key={index} mb={4}>
-              {/* Beschriftung */}
-              <Text mb={2}>Beschriftung</Text>
-              <Input
-                name="beschriftung"
-                value={abbildung.beschriftung}
-                onChange={(e) => handleAbbildungChange(e, index, 'beschriftung')}
-                bg="gray.700"
-                color="white"
-                mb={2}
-              />
-
-              {/* Content Type */}
-              <Text mb={2}>Content Type</Text>
-              <Input
-                name="contentType"
-                value={abbildung.contentType}
-                onChange={(e) => handleAbbildungChange(e, index, 'contentType')}
-                bg="gray.700"
-                color="white"
+          <Flex direction="column">
+            <Text>Veröffentlichungsdatum</Text>
+            <Box bg="gray.700" p={2} borderRadius="md">
+              <DatePicker
+                selected={buch.datum ? new Date(buch.datum) : null}
+                onChange={(date: Date) =>
+                  setBuch((prev) => ({
+                    ...prev,
+                    datum: date.toISOString(),
+                  }))
+                }
+                dateFormat="dd.MM.yyyy"
               />
             </Box>
-          ))}
-          <Button
-            onClick={addAbbildung}
-            colorScheme="teal"
-            mt={4}
-          >
-            Weitere Abbildung hinzufügen
-          </Button>
-        </Box>
+          </Flex>
+          {/* Schlagwörter */}
+          <Flex direction="column">
+            <Text>Schlagwörter</Text>
+            <Box mt={2}>
+              {Schlagwoerter.map((tag) => (
+                <Button key={tag}>
+                  <Button
+                    variant={
+                      buch.schlagwoerter.includes(tag) ? 'solid' : 'outline'
+                    }
+                    onClick={() => handleSchlagwortToggle(tag)}
+                    colorScheme="orange"
+                    size="sm"
+                  >
+                    {tag}
+                  </Button>
+                </Button>
+              ))}
+            </Box>
+          </Flex>
+          <DateiUploadSection
+            onFileUpload={(file) => {
+              console.log(file);
+            }}
+          />
+          <AbbildungenSection
+            abbildungen={buch.abbildungen}
+            onAdd={() =>
+              setBuch((prev) => ({
+                ...prev,
+                abbildungen: [
+                  ...prev.abbildungen,
+                  { beschriftung: '', contentType: '' },
+                ],
+              }))
+            }
+            onRemove={(index) =>
+              setBuch((prev) => ({
+                ...prev,
+                abbildungen: prev.abbildungen.filter((_, i) => i !== index),
+              }))
+            }
+            onChange={(e, index, field) =>
+              setBuch((prev) => ({
+                ...prev,
+                abbildungen: prev.abbildungen.map((a, i) =>
+                  i === index ? { ...a, [field]: e.target.value } : a,
+                ),
+              }))
+            }
+          />
         </VStack>
-
-        <Button colorScheme="yellow" onClick={handleCreate}>
+        <Button onClick={handleSubmit} colorScheme="yellow">
           Buch erstellen
         </Button>
       </Flex>
