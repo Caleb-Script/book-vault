@@ -6,10 +6,11 @@ import Navbar from './features/navBar';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
 // import Login from './pages/login';
-import LoginPage from './pages/kp';
+import Footer from './features/footer';
+import Startseite from './pages/bücher';
+import LoginPage from './pages/login';
 import UserPage from './pages/UserPage';
 import BuchAendern from './pages/ändereBuch';
-import Startseite from './pages/bücher';
 
 const App = () => {
   const navbarHeight = '60px'; // Höhe der Navbar
@@ -46,13 +47,13 @@ const App = () => {
       >
         <Routes>
           {/* Startseite */}
-          <Route path="/homepage" element={<Homepage />} />
+          <Route path="/" element={<Homepage />} />
 
           {/* <PrivateRoute>
 
           </PrivateRoute> */}
           {/* Homepage */}
-          <Route path="/" element={<Startseite />} />
+          <Route path="/buecher" element={<Startseite />} />
 
           {/* Buchdetails */}
           <Route path="/buch/:id" element={<BuchDetails />} />
@@ -62,6 +63,7 @@ const App = () => {
           <Route path="/user" element={<UserPage />} />
         </Routes>
       </Box>
+      <Footer />
     </Flex>
   );
 };

@@ -103,7 +103,7 @@ const Startseite = () => {
           placeholder="Suche nach einem Buch..."
           size="lg"
           borderColor="#cc9600"
-          _focus={{ borderColor: "#cc9600" }}
+          _focus={{ borderColor: '#cc9600' }}
           color="black"
           bg="white"
           value={searchTerm}

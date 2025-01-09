@@ -98,7 +98,7 @@ const FilterDialog = ({
                 bg="gray.800"
                 borderColor="gray.600"
                 _hover={{ borderColor: '#cc9600' }}
-                _focus={{ borderColor: "#cc9600" }}
+                _focus={{ borderColor: '#cc9600' }}
                 value={filters.isbn || ''}
                 onChange={(e) =>
                   handleInputChange('isbn', e.target.value || undefined)
@@ -116,7 +116,7 @@ const FilterDialog = ({
                 bg="gray.800"
                 borderColor="gray.600"
                 _hover={{ borderColor: '#cc9600' }}
-                _focus={{ borderColor: "#cc9600" }}
+                _focus={{ borderColor: '#cc9600' }}
                 min={1}
                 max={5}
                 value={filters.rating || ''}
@@ -157,14 +157,24 @@ const FilterDialog = ({
             <Checkbox
               colorScheme="yellow"
               checked={filters.lieferbar || false}
-              onChange={(e) => handleInputChange('lieferbar', (e.target as HTMLInputElement).checked)}
+              onChange={(e) =>
+                handleInputChange(
+                  'lieferbar',
+                  (e.target as HTMLInputElement).checked,
+                )
+              }
             >
               Nur verfügbare Bücher
             </Checkbox>
             <Checkbox
               colorScheme="yellow"
               checked={filters.rabatt || false}
-              onChange={(e) => handleInputChange('rabatt', (e.target as HTMLInputElement).checked)}
+              onChange={(e) =>
+                handleInputChange(
+                  'rabatt',
+                  (e.target as HTMLInputElement).checked,
+                )
+              }
             >
               Nur rabattierte Bücher
             </Checkbox>

@@ -1,4 +1,4 @@
-import { Box, Button, HStack, IconButton, Text } from '@chakra-ui/react';
+import { Box, Button, HStack, IconButton } from '@chakra-ui/react';
 import { FaMoon, FaSun } from 'react-icons/fa';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.tsx';
@@ -8,8 +8,8 @@ import CustomIcon from './icon.tsx';
 import dalle from './icon/DALLE.png';
 
 const Links = [
-  { name: 'Home', path: '/homepage' },
-  { name: 'Suche Buch', path: '/' },
+  { name: 'Home', path: '/' },
+  { name: 'Suche Buch', path: '/buecher' },
 ];
 
 const Navbar = () => {

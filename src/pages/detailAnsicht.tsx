@@ -17,6 +17,7 @@ import { FaCheckCircle, FaStar, FaTimesCircle } from 'react-icons/fa';
 import { Link as RouterLink, useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import { Tag } from '../components/ui/tag';
+import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { BUCH, BUECHER } from '../graphql/query/get-buch.query';
 import '../styles/slick.css';
@@ -26,6 +27,7 @@ import { Buch } from '../types/buch.type';
 const BuchDetails = () => {
   const { id } = useParams();
   const { isDarkMode } = useTheme();
+  const { user, isAuthenticated } = useAuth();
 
   const { data, loading, error } = useQuery(BUCH, {
     variables: { id },
@@ -101,7 +103,10 @@ const BuchDetails = () => {
         {/* Linke Spalte: Bild, Titel und Aktionen */}
         <VStack flex="1" gap={6} align="center">
           <Image
-            src={buch.abbildungen?.[0]?.beschriftung || 'https://via.placeholder.com/300'}
+            src={
+              buch.abbildungen?.[0]?.beschriftung ||
+              'https://via.placeholder.com/300'
+            }
             alt={buch.titel?.titel || 'Buchbild'}
             borderRadius="lg"
             boxShadow="lg"
@@ -116,25 +121,27 @@ const BuchDetails = () => {
               </Text>
             )}
           </Box>
-          <Stack direction="row" gap={4}>
-            <Button
-              data-cy="edit-button"
-              colorScheme="yellow"
-              variant="solid"
-              bg="#cc9600"
-              color="black"
-            >
-              Bearbeiten
-            </Button>
-            <Button
-              colorScheme="red"
-              variant="outline"
-              borderColor="#cc9600"
-              color="#cc9600"
-            >
-              Löschen
-            </Button>
-          </Stack>
+          {/* Buttons basierend auf Benutzerrolle */}
+          {isAuthenticated && user?.role === 'admin' && (
+            <Stack direction="row" gap={4}>
+              <Button
+                colorScheme="yellow"
+                variant="solid"
+                bg="#cc9600"
+                color="black"
+              >
+                Bearbeiten
+              </Button>
+              <Button
+                colorPalette={'red'}
+                variant="outline"
+                borderColor="#cc9600"
+                color="#cc9600"
+              >
+                Löschen
+              </Button>
+            </Stack>
+          )}
           <RouterLink to="/">
             <Button colorScheme="blue" size="lg" bg="#cc9600" color="black">
               Zurück zur Startseite
