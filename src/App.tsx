@@ -58,9 +58,6 @@ const App = () => {
           {/* Buchdetails */}
           <Route path="/buch/:id" element={<BuchDetails />} />
 
-          {/* Route zum Erstellen eines Buches */}
-          <Route path="/neuesBuch" element={<BuchErstellen />} />
-
           {/* Route zum Ändern eines Buches */}
           <Route path="/buch/:id/bearbeiten" element={<BuchAendern />} />
           <Route path="/login" element={<LoginPage />} />
