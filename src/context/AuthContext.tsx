@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { loginService } from '../lib/auth';
-import { jwtDecode } from 'jwt-decode';
 
 interface UserInfo {
   username: string;
@@ -45,7 +45,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsAuthenticated(!!token);
       setAccessToken(token);
     }
-
   }, []);
 
   const login = async (username: string, password: string) => {
@@ -65,22 +64,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setAccessToken(null);
   };
 
-    const decodeToken = (token: string): UserInfo | null => {
-      try {
-        const decoded: any = jwtDecode(token); // Decodes JWT to extract user info
-        return {
-          username: decoded.preferred_username || '',
-          email: decoded.email || '',
-          given_name: decoded.given_name || '',
-          family_name: decoded.family_name || '',
-          expires_in: decoded.exp || 0,
-          role: decoded.resource_access['nest-client'].roles[0],
-        };
-      } catch (error) {
-        console.error('Token decoding failed:', error);
-        return null;
-      }
-    };
+  const decodeToken = (token: string): UserInfo | null => {
+    try {
+      const decoded: any = jwtDecode(token); // Decodes JWT to extract user info
+      return {
+        username: decoded.preferred_username || '',
+        email: decoded.email || '',
+        given_name: decoded.given_name || '',
+        family_name: decoded.family_name || '',
+        expires_in: decoded.exp || 0,
+        role: decoded.resource_access['nest-client'].roles[0],
+      };
+    } catch (error) {
+      console.error('Token decoding failed:', error);
+      return null;
+    }
+  };
 
   return (
     <AuthContext.Provider
