@@ -93,7 +93,7 @@ const Navbar = () => {
       </Box>
 
       {/* User and Theme Toggle Section */}
-      <HStack spacing={4} alignItems="center">
+      <HStack gap={4} alignItems="center">
         {isAuthenticated && (
           <IconButton
             aria-label="Theme Toggle"

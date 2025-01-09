@@ -5,7 +5,6 @@ import { useTheme } from './context/ThemeContext';
 import Navbar from './features/navBar';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
-// import Login from './pages/login';
 import Footer from './features/footer';
 import Startseite from './pages/bücher';
 import LoginPage from './pages/login';

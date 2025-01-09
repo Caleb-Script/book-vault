@@ -88,7 +88,7 @@ const UserPage = () => {
             Benutzerprofil
           </Heading>
           <Separator mb={4} borderColor="yellow.400" />
-          <VStack spacing={4} align="stretch">
+          <VStack gap={4} align="stretch">
             <Text fontSize="lg">
               <strong>Vorname:</strong> {user.given_name}
             </Text>
