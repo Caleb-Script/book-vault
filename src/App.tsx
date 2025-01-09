@@ -60,7 +60,7 @@ const App = () => {
           <Route path="/neuesBuch" element={<BuchErstellen />} />
 
           {/* Route zum Ändern eines Buches */}
-          <Route path="/buch/bearbeiten/:id" element={<BuchÄndern />} />
+          <Route path="/bearbeiten/:id" element={<BuchÄndern />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/user" element={<UserPage />} />
         </Routes>
