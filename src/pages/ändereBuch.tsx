@@ -109,29 +109,38 @@ const BuchÄndern = () => {
   // Buchdaten aktualisieren
   const handleUpdate = async () => {
     try {
-      const preisFloat = buch.preis; // Preis bereits als Float
-      const rabattFloat = buch.rabatt; // Rabatt ebenfalls als Float
-      console.log('Token im LocalStorage:', localStorage.getItem('authToken'));
+  
+      // Version aus den Buchdaten holen
+      const version = data?.buch?.version;
+  
+      if (version === undefined) {
+        throw new Error('Version fehlt in den Buchdaten.');
+      }
+  
       const result = await updateBuch({
         variables: {
           id,
+          version, // Version hinzufügen
           isbn: buch.isbn,
           rating: buch.rating,
-          preis: preisFloat, // Preis als Float
-          rabatt: rabattFloat, // Rabatt als Float
+          preis: buch.preis,
+          rabatt: buch.rabatt,
           lieferbar: buch.lieferbar,
           datum: buch.datum,
           homepage: buch.homepage,
           schlagwoerter: buch.schlagwoerter,
         },
       });
-
+  
       console.log('Update erfolgreich:', result);
-      navigate(`/buch/${id}`); // Nach Update zur Detailseite navigieren
+      navigate(`/buch/${id}`);
+      alert('Das Buch wurde erfolgreich aktualisiert.');
     } catch (err) {
       console.error('Fehler beim Aktualisieren:', err);
+      alert('Es gab ein Problem beim Aktualisieren des Buches.');
     }
   };
+  
 
   // Lade- oder Fehlerzustände anzeigen
   if (loading || allBooksLoading) {
