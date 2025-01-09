@@ -151,7 +151,7 @@ const BuchDetails = () => {
           </RouterLink>
 
           {/* Ähnliche Bücher als Karussell */}
-          <Box mt={10} width="100%">
+          {/* <Box mt={10} width="100%">
             <Heading as="h3" size="lg" mb={5} color="#cc9600">
               Ähnliche Bücher
             </Heading>
@@ -199,7 +199,7 @@ const BuchDetails = () => {
                 </Box>
               ))}
             </Slider>
-          </Box>
+          </Box> */}
         </VStack>
 
         {/* Rechte Spalte: Details */}
@@ -210,7 +210,7 @@ const BuchDetails = () => {
           <Stack gap={5}>
             <DetailBox label="ISBN" content={buch.isbn} />
             <DetailBox label="Preis" content={`${buch.preis} EUR`} />
-            <DetailBox label="Rabatt" content={`${buch.rabatt}%`} />
+            <DetailBox label="Rabatt" content={`${buch.rabatt}`} />
             <DetailBox
               label="Lieferbar"
               content={
