@@ -64,6 +64,7 @@ const FilterDialog = ({
     <DialogRoot>
       <DialogTrigger asChild>
         <Button
+          data-cy="filter"
           variant="outline"
           size="lg"
           colorScheme="yellow"
@@ -87,10 +88,11 @@ const FilterDialog = ({
         <DialogBody>
           <VStack gap={6} align="stretch">
             <Box>
-              <Text color="#cc9600" mb={2}>
+              <Text color="#cc9600" mb={2} data-cy="isbn">
                 ISBN:
               </Text>
               <Input
+                data-cy="isbn-post"
                 placeholder="ISBN eingeben"
                 color="white"
                 bg="gray.800"
@@ -188,6 +190,7 @@ const FilterDialog = ({
             onClick={() => applyFilters(filters)}
             size="lg"
             colorScheme="yellow"
+            data-cy="post-apply"
           >
             Anwenden
           </Button>

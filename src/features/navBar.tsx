@@ -38,8 +38,8 @@ const Navbar = () => {
       borderBottom="2px solid #cc9600"
     >
       {/* Logo Section */}
-      <Box className="navbar-logo" display="flex" alignItems="center" gap={3}>
-        <CustomIcon imageSrc={dalle} altText="DALLE" navigateTo="/" />
+      <Box className="navbar-logo" display="flex" alignItems="center" gap={3} data-cy="logo">
+        <CustomIcon imageSrc={dalle} altText="DALLE" navigateTo="/" data-cy="logo"/>
         <h1
           className="span"
           style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#cc9600' }}
@@ -55,6 +55,7 @@ const Navbar = () => {
           ...(isAuthenticated && user?.role === 'admin' ? adminLinks : []),
         ].map(({ name, path }) => (
           <NavLink
+            data-cy='Neues Buch'
             key={name}
             to={path}
             className={({ isActive }) => (isActive ? 'active' : '')}
@@ -109,6 +110,7 @@ const Navbar = () => {
         {!isAuthenticated ? (
           <NavLink
             to="/login"
+            data-cy="login-link"
             style={{
               textDecoration: 'none',
               fontWeight: 'medium',
@@ -124,6 +126,7 @@ const Navbar = () => {
           </NavLink>
         ) : (
           <Button
+            data-cy="logout-button"
             onClick={handleLogout}
             size="sm"
             bg="#cc9600"

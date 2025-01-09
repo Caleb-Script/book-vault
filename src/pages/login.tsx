@@ -65,6 +65,7 @@ const Login = () => {
           <HStack w="full" gap={3} bg="gray.700" p={3} borderRadius="md">
             {/* <Icon as={FaUserAlt} color="gray.500" /> */}
             <Input
+              data-cy="login-username"
               placeholder="Benutzername"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -78,6 +79,7 @@ const Login = () => {
           <HStack w="full" gap={3} bg="gray.700" p={3} borderRadius="md">
             {/* <Icon as={FaLock} color="gray.500" /> */}
             <Input
+              data-cy="login-password"
               placeholder="Passwort"
               type="password"
               value={password}
@@ -92,6 +94,7 @@ const Login = () => {
         </VStack>
 
         <Button
+          data-cy="login-button-second"
           w="full"
           bg="#cc9600"
           color="black"

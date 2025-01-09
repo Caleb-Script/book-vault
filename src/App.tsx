@@ -10,7 +10,7 @@ import Homepage from './pages/homepage';
 import LoginPage from './pages/login';
 import BuchErstellen from './pages/neuesBuch';
 import UserPage from './pages/UserPage';
-import BuchAendern from './pages/ändereBuch';
+import BuchÄndern from './pages/ändereBuch';
 
 const App = () => {
   const navbarHeight = '60px'; // Höhe der Navbar

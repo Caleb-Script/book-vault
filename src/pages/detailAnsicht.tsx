@@ -124,23 +124,25 @@ const BuchDetails = () => {
           {/* Buttons basierend auf Benutzerrolle */}
           {isAuthenticated && user?.role === 'admin' && (
             <Stack direction="row" gap={4}>
-              <Button
-                colorScheme="yellow"
-                variant="solid"
-                bg="#cc9600"
-                color="black"
-              >
-                Bearbeiten
-              </Button>
-              <Button
-                colorPalette={'red'}
-                variant="outline"
-                borderColor="#cc9600"
-                color="#cc9600"
-              >
-                Löschen
-              </Button>
-            </Stack>
+            <RouterLink to={`/bearbeiten/${buch.id}`}>
+             <Button
+               colorScheme="yellow"
+               variant="solid"
+               bg="#cc9600"
+               color="black"
+             >
+               Bearbeiten
+             </Button>
+            </RouterLink>
+             <Button
+               colorScheme="red"
+               variant="outline"
+               borderColor="#cc9600"
+               color="#cc9600"
+             >
+               Löschen
+             </Button>
+           </Stack>
           )}
           <RouterLink to="/">
             <Button colorScheme="blue" size="lg" bg="#cc9600" color="black">
