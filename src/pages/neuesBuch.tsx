@@ -143,11 +143,16 @@ const BuchErstellen = () => {
           <FormSection
             label="Titel"
             name="titel"
-            value={buch.titel.titel}
+            value={buch.titel?.titel || ''}
             onChange={(e) =>
               setBuch((prev) => ({
                 ...prev,
-                titel: { ...prev.titel, titel: e.target.value },
+                titel: {
+                  ...prev.titel,
+                  id: prev.titel?.id,
+                  titel: e.target.value,
+                  untertitel: prev.titel?.untertitel
+                },              
               }))
             }
             error={errors.titel}
@@ -155,11 +160,16 @@ const BuchErstellen = () => {
           <FormSection
             label="Untertitel"
             name="untertitel"
-            value={buch.titel.untertitel}
+            value={buch.titel?.untertitel || ''}
             onChange={(e) =>
               setBuch((prev) => ({
                 ...prev,
-                titel: { ...prev.titel, untertitel: e.target.value },
+                titel: {
+                  ...prev.titel,
+                  id: prev.titel?.id,
+                  titel: e.target.value,
+                  untertitel: prev.titel?.untertitel
+                },              
               }))
             }
             error={errors.untertitel}
@@ -221,9 +231,9 @@ const BuchErstellen = () => {
             <Text>Buchart</Text>
             <SelectRoot
               items={['EPUB', 'HARDCOVER', 'PAPERBACK']}
-              value={buch.art}
+              value={[buch.art]}
               onValueChange={(value) =>
-                setBuch((prev) => ({ ...prev, art: value }))
+                setBuch((prev) => ({ ...prev, art: value as unknown as BuchArt }))
               }
             >
               <SelectLabel>Buchart</SelectLabel>
@@ -242,7 +252,7 @@ const BuchErstellen = () => {
 
           <Flex direction="column">
             <Text>Bewertung (Rating)</Text>
-            <HStack mt={2} spacing={1}>
+            <HStack mt={2} gap={1}>
               {Array.from({ length: 5 }, (_, i) => (
                 <FaStar
                   key={i}
@@ -267,10 +277,10 @@ const BuchErstellen = () => {
             <Box bg="gray.700" p={2} borderRadius="md">
               <DatePicker
                 selected={buch.datum ? new Date(buch.datum) : null}
-                onChange={(date: Date) =>
+                onChange={(date: Date | null) =>
                   setBuch((prev) => ({
                     ...prev,
-                    datum: date.toISOString(),
+                    datum: date ? date.toISOString() : '',
                   }))
                 }
                 dateFormat="dd.MM.yyyy"
@@ -304,12 +314,12 @@ const BuchErstellen = () => {
             }}
           />
           <AbbildungenSection
-            abbildungen={buch.abbildungen}
+            abbildungen={buch.abbildungen? buch.abbildungen : []}
             onAdd={() =>
               setBuch((prev) => ({
                 ...prev,
                 abbildungen: [
-                  ...prev.abbildungen,
+                  ...(prev.abbildungen || []),
                   { beschriftung: '', contentType: '' },
                 ],
               }))
@@ -317,20 +327,20 @@ const BuchErstellen = () => {
             onRemove={(index) =>
               setBuch((prev) => ({
                 ...prev,
-                abbildungen: prev.abbildungen.filter((_, i) => i !== index),
+                abbildungen: (prev.abbildungen || []).filter((_, i) => i !== index),
               }))
             }
             onChange={(e, index, field) =>
               setBuch((prev) => ({
                 ...prev,
-                abbildungen: prev.abbildungen.map((a, i) =>
+                abbildungen: (prev.abbildungen || []).map((a, i) =>
                   i === index ? { ...a, [field]: e.target.value } : a,
                 ),
               }))
             }
           />
         </VStack>
-        <Button onClick={handleSubmit} colorScheme="yellow" isLoading={loading}>
+        <Button onClick={handleSubmit} colorScheme="yellow" _loading={loading}>
           Buch erstellen
         </Button>
       </Flex>
