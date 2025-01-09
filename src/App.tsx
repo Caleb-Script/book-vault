@@ -2,13 +2,13 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useTheme } from './context/ThemeContext';
+import Footer from './features/footer';
 import Navbar from './features/navBar';
+import Startseite from './pages/bücher';
 import BuchDetails from './pages/detailAnsicht';
 import Homepage from './pages/homepage';
-// import Login from './pages/login';
-import Footer from './features/footer';
-import Startseite from './pages/bücher';
 import LoginPage from './pages/login';
+import BuchErstellen from './pages/neuesBuch';
 import UserPage from './pages/UserPage';
 import BuchÄndern from './pages/ändereBuch';
 
@@ -57,9 +57,10 @@ const App = () => {
 
           {/* Buchdetails */}
           <Route path="/buch/:id" element={<BuchDetails />} />
-          {/* Route zum Ändern eines Buchs */}
-          <Route path="/bearbeiten/:id" element={<BuchÄndern />} />
+          <Route path="/neuesBuch" element={<BuchErstellen />} />
 
+          {/* Route zum Ändern eines Buches */}
+          <Route path="/buch/:id/bearbeiten" element={<BuchAendern />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/user" element={<UserPage />} />
         </Routes>

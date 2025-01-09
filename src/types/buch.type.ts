@@ -1,9 +1,9 @@
 export type Buch = {
-  id: number;
-  version: number;
+  id?: number;
+  version?: number;
   isbn: string;
   rating: number;
-  art: string;
+  art: BuchArt;
   preis: number;
   rabatt: string;
   lieferbar: boolean;
@@ -18,23 +18,24 @@ export type Buch = {
 };
 
 type Titel = {
-  id: number | undefined;
+  id?: number | undefined;
   titel: string;
   untertitel: string | undefined;
 };
 
 type BuchFile = {
-  id: number | undefined;
+  id?: number | undefined;
   filename: string | undefined;
   data: Uint8Array | undefined;
-  buch: Buch | undefined;
 };
 
 type Abbildung = {
-  id: number | undefined;
+  id?: number | undefined;
   beschriftung: string;
   contentType: string | undefined;
 };
+
+export type BuchArt = 'EPUB' | 'HARDCOVER' | 'PAPERBACK';
 
 export type Suchkriterien = {
   titel: string | undefined;
@@ -44,5 +45,3 @@ export type Suchkriterien = {
   lieferbar: boolean | undefined;
   rabatt: boolean | undefined;
 };
-
-export type BuchArt = 'EPUB' | 'HARDCOVER' | 'PAPERBACK';
