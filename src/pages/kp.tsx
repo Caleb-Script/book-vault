@@ -41,7 +41,7 @@ const Login = () => {
       px={4}
     >
       <VStack
-        spacing={6}
+        gap={6}
         bg="gray.800"
         p={8}
         borderRadius="xl"
@@ -63,10 +63,11 @@ const Login = () => {
           </Text>
         )}
 
-        <VStack spacing={4} w="full">
-          <HStack w="full" spacing={3} bg="gray.700" p={3} borderRadius="md">
+        <VStack gap={4} w="full">
+          <HStack w="full" gap={3} bg="gray.700" p={3} borderRadius="md">
             {/* <Icon as={FaUserAlt} color="gray.500" /> */}
             <Input
+              data-cy="login-username"
               placeholder="Benutzername"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -77,9 +78,10 @@ const Login = () => {
               _placeholder={{ color: 'gray.500' }}
             />
           </HStack>
-          <HStack w="full" spacing={3} bg="gray.700" p={3} borderRadius="md">
+          <HStack w="full" gap={3} bg="gray.700" p={3} borderRadius="md">
             {/* <Icon as={FaLock} color="gray.500" /> */}
             <Input
+              data-cy="login-password"
               placeholder="Passwort"
               type="password"
               value={password}
@@ -94,6 +96,7 @@ const Login = () => {
         </VStack>
 
         <Button
+          data-cy="login-button-second"
           w="full"
           bg="#cc9600"
           color="black"

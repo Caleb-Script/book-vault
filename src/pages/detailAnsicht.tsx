@@ -118,6 +118,7 @@ const BuchDetails = () => {
           </Box>
           <Stack direction="row" gap={4}>
             <Button
+              data-cy="edit-button"
               colorScheme="yellow"
               variant="solid"
               bg="#cc9600"

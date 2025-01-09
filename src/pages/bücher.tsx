@@ -99,6 +99,7 @@ const Startseite = () => {
       </Heading>
       <HStack gap={4} mb={8}>
         <Input
+          data-cy="Suche"
           placeholder="Suche nach einem Buch..."
           size="lg"
           borderColor="#cc9600"
@@ -121,6 +122,7 @@ const Startseite = () => {
       >
         {displayedBooks.map((book) => (
           <GridItem
+            data-cy="book-table"
             key={book.id}
             bg="gray.700"
             p={4}
