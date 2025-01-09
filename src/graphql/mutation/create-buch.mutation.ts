@@ -39,3 +39,11 @@ export const CREATE_BUCH = gql`
 //     }
 //   }
 // `;
+
+export const CREATE_MUTATION = gql`
+  mutation Create($input: BuchInput!) {
+    create(input: $input) {
+      id
+    }
+  }
+`;

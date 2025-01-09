@@ -70,7 +70,7 @@ const Login = () => {
               onChange={(e) => setUsername(e.target.value)}
               bg="transparent"
               border="none"
-              _focus={{borderColor:"transparent"}}
+              _focus={{ borderColor: 'transparent' }}
               color="white"
               _placeholder={{ color: 'gray.500' }}
             />
@@ -84,7 +84,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               bg="transparent"
               border="none"
-              _focus={{borderColor:"transparent"}}
+              _focus={{ borderColor: 'transparent' }}
               color="white"
               _placeholder={{ color: 'gray.500' }}
             />

@@ -2,9 +2,9 @@ export const validateFields = (buch: any): { [key: string]: string } => {
   const errors: { [key: string]: string } = {};
 
   // ISBN Validierung
-  if (!buch.isbn || !/^\d{10,13}$/.test(buch.isbn)) {
-    errors.isbn = 'ISBN muss eine gültige 10- oder 13-stellige Zahl sein.';
-  }
+  // if (!buch.isbn || !/^\d{10,13}$/.test(buch.isbn)) {
+  //   errors.isbn = 'ISBN muss eine gültige 10- oder 13-stellige Zahl sein.';
+  // }
 
   // Titel Validierung
   if (!buch.titel?.titel || buch.titel.titel.trim().length === 0) {
@@ -30,9 +30,9 @@ export const validateFields = (buch: any): { [key: string]: string } => {
   }
 
   // Buchart Validierung
-  if (!buch.art || !['EPUB', 'HARDCOVER', 'PAPERBACK'].includes(buch.art)) {
-    errors.art = 'Buchart ist ungültig.';
-  }
+  // if (!buch.art || !['EPUB', 'HARDCOVER', 'PAPERBACK'].includes(buch.art)) {
+  //   errors.art = 'Buchart ist ungültig.';
+  // }
 
   // Preis Validierung
   if (isNaN(buch.preis) || buch.preis <= 0) {
@@ -45,9 +45,9 @@ export const validateFields = (buch: any): { [key: string]: string } => {
   }
 
   // Datum Validierung
-  if (!buch.datum || !/^\d{4}-\d{2}-\d{2}$/.test(buch.datum)) {
-    errors.datum = 'Datum muss im Format JJJJ-MM-TT sein.';
-  }
+  // if (!buch.datum || !/^\d{4}-\d{2}-\d{2}$/.test(buch.datum)) {
+  //   errors.datum = 'Datum muss im Format JJJJ-MM-TT sein.';
+  // }
 
   // Homepage Validierung
   if (buch.homepage && !/^https?:\/\/[^\s$.?#].[^\s]*$/.test(buch.homepage)) {

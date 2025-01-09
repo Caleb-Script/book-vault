@@ -1,5 +1,4 @@
-
-import { Box, defineStyle, Field, Input, Text } from '@chakra-ui/react';
+import { Box, Field, Input, Text } from '@chakra-ui/react';
 
 interface FormSectionProps {
   label: string;
@@ -18,7 +17,6 @@ const FormSection: React.FC<FormSectionProps> = ({
   type = 'text',
   error,
 }) => {
-
   return (
     <Box mb={4} position="relative">
       <Field.Root invalid={!!error}>
@@ -34,7 +32,6 @@ const FormSection: React.FC<FormSectionProps> = ({
             borderColor: error ? 'red.500' : 'blue.500',
             boxShadow: error ? '0 0 0 1px red' : '0 0 0 1px blue',
           }}
-
         />
         <Field.Label css={floatingStyles}>{label}</Field.Label>
       </Field.Root>
@@ -70,6 +67,5 @@ const floatingStyles = {
     fontSize: 'sm',
   },
 };
-
 
 export default FormSection;
