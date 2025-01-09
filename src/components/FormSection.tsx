@@ -27,7 +27,7 @@ const FormSection: React.FC<FormSectionProps> = ({
           bg="gray.700"
           color="white"
           type={type}
-          borderColor={error ? 'red.500' : 'gray.600'}
+          borderColor={error ? 'red.500' : '#cc9600'}
           _focus={{
             borderColor: error ? 'red.500' : 'blue.500',
             boxShadow: error ? '0 0 0 1px red' : '0 0 0 1px blue',
@@ -46,12 +46,12 @@ const FormSection: React.FC<FormSectionProps> = ({
 
 const floatingStyles = {
   position: 'absolute',
-  backgroundColor: 'gray.800',
+  backgroundColor: 'gray.700',
   paddingX: '0.5rem',
   top: '-0.75rem',
   left: '0.75rem',
   fontSize: 'sm',
-  color: 'gray.400',
+  color: '#cc9600',
   pointerEvents: 'none',
   transition: 'all 0.2s',
   _peerPlaceholderShown: {

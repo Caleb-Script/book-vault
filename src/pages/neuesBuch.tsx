@@ -28,6 +28,7 @@ import { validateFields } from '../components/Validation';
 import { CREATE_MUTATION } from '../graphql/mutation/create-buch.mutation';
 import { Buch } from '../types/buch.type';
 import { Switch } from '../components/ui/switch';
+import { useTheme } from '../context/ThemeContext';
 
 const Schlagwoerter = ['JAVASCRIPT', 'TYPESCRIPT', 'JAVA', 'PYTHON'];
 
@@ -53,7 +54,7 @@ const BuchErstellen = () => {
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
+  const { isDarkMode } = useTheme(); // Dunkelmodus aus dem Kontext
   const [createBuch, { loading }] = useMutation(CREATE_MUTATION, {
     onCompleted: (data) => {
       console.log('Buch erfolgreich erstellt:', data);
@@ -143,7 +144,7 @@ const BuchErstellen = () => {
           <FormSection
             label="Titel"
             name="titel"
-            value={buch.titel.titel}
+            value={buch?.titel?.titel ?? ''}
             onChange={(e) =>
               setBuch((prev) => ({
                 ...prev,
@@ -182,11 +183,14 @@ const BuchErstellen = () => {
 
           {/* Rabatt */}
           <Flex direction="column">
-            <Text mb={2}>Rabatt (%)</Text>
-            <HStack align="center">
+            <Text mb={2} color={'#cc9600'} border={'#cc9600'}>
+              Rabatt (%)
+            </Text>
+            <HStack align="center" color={'#cc9600'} border={'#cc9600'}>
               <input
                 type="range"
                 name="rabatt"
+                color={isDarkMode ? 'white' : 'black'}
                 min={0}
                 max={100}
                 step={1}
@@ -204,8 +208,12 @@ const BuchErstellen = () => {
 
           {/* Lieferbar */}
           <Flex direction="column">
-            <Text mb={2}>Verfügbar</Text>
+            <Text mb={2} color={'#cc9600'} border={'#cc9600'}>
+              Verfügbar
+            </Text>
             <Switch
+              color={'#cc9600'}
+              border={'#cc9600'}
               isChecked={buch.lieferbar}
               onChange={(e) =>
                 setBuch((prev) => ({ ...prev, lieferbar: e.target.checked }))
@@ -218,21 +226,32 @@ const BuchErstellen = () => {
 
           {/* Art */}
           <Box>
-            <Text>Buchart</Text>
+            <Text color={'#cc9600'} border={'#cc9600'}>
+              Buchart
+            </Text>
             <SelectRoot
+              color={'#cc9600'}
+              border={'#cc9600'}
               items={['EPUB', 'HARDCOVER', 'PAPERBACK']}
               value={buch.art}
               onValueChange={(value) =>
                 setBuch((prev) => ({ ...prev, art: value }))
               }
             >
-              <SelectLabel>Buchart</SelectLabel>
-              <SelectTrigger>
-                <SelectValueText />
+              <SelectLabel color={'#cc9600'} border={'#cc9600'}>
+                Buchart
+              </SelectLabel>
+              <SelectTrigger color={'#cc9600'} border={'#cc9600'}>
+                <SelectValueText color={'#cc9600'} border={'#cc9600'} />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent color={'#cc9600'} border={'#cc9600'}>
                 {['EPUB', 'HARDCOVER', 'PAPERBACK'].map((art) => (
-                  <SelectItem key={art} item={art}>
+                  <SelectItem
+                    key={art}
+                    item={art}
+                    color={'#cc9600'}
+                    border={'#cc9600'}
+                  >
                     {art}
                   </SelectItem>
                 ))}
@@ -241,8 +260,10 @@ const BuchErstellen = () => {
           </Box>
 
           <Flex direction="column">
-            <Text>Bewertung (Rating)</Text>
-            <HStack mt={2} spacing={1}>
+            <Text color={'#cc9600'} border={'#cc9600'}>
+              Bewertung (Rating)
+            </Text>
+            <HStack color={'#cc9600'} border={'#cc9600'} mt={2} spacing={1}>
               {Array.from({ length: 5 }, (_, i) => (
                 <FaStar
                   key={i}
@@ -258,12 +279,16 @@ const BuchErstellen = () => {
                 />
               ))}
             </HStack>
-            <Text mt={2}>{buch.rating} von 5</Text>
+            <Text mt={2} color={'#cc9600'} border={'#cc9600'}>
+              {buch.rating} von 5
+            </Text>
           </Flex>
 
           {/* Datum */}
           <Flex direction="column">
-            <Text>Veröffentlichungsdatum</Text>
+            <Text color={'#cc9600'} border={'#cc9600'}>
+              Veröffentlichungsdatum
+            </Text>
             <Box bg="gray.700" p={2} borderRadius="md">
               <DatePicker
                 selected={buch.datum ? new Date(buch.datum) : null}
@@ -280,10 +305,14 @@ const BuchErstellen = () => {
 
           {/* Schlagwörter */}
           <Flex direction="column">
-            <Text>Schlagwörter</Text>
-            <Box mt={2}>
+            <Text color={'#cc9600'} border={'#cc9600'}>
+              Schlagwörter
+            </Text>
+            <Box mt={2} color={'#cc9600'} border={'#cc9600'}>
               {Schlagwoerter.map((tag) => (
                 <Button
+                  color={'#cc9600'}
+                  border={'#cc9600'}
                   key={tag}
                   variant={
                     buch.schlagwoerter.includes(tag) ? 'solid' : 'outline'
@@ -298,11 +327,6 @@ const BuchErstellen = () => {
               ))}
             </Box>
           </Flex>
-          <DateiUploadSection
-            onFileUpload={(file) => {
-              console.log(file);
-            }}
-          />
           <AbbildungenSection
             abbildungen={buch.abbildungen}
             onAdd={() =>

@@ -25,7 +25,9 @@ const AbbildungenSection: React.FC<AbbildungenSectionProps> = ({
       </Text>
       {abbildungen.map((abbildung, index) => (
         <Box key={index} mb={4}>
-          <Text mb={2}>Beschriftung</Text>
+          <Text color={'#cc9600'} border={'#cc9600'} mb={2}>
+            Beschriftung
+          </Text>
           <Input
             name="beschriftung"
             value={abbildung.beschriftung}
@@ -34,7 +36,9 @@ const AbbildungenSection: React.FC<AbbildungenSectionProps> = ({
             color="white"
             mb={2}
           />
-          <Text mb={2}>Content Type</Text>
+          <Text color={'#cc9600'} border={'#cc9600'} mb={2}>
+            Content Type
+          </Text>
           <Input
             name="contentType"
             value={abbildung.contentType}
